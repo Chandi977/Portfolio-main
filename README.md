@@ -1,8 +1,8 @@
-# 🚀 3D Developer Portfolio
+# 🚀 3D Developer Portfolio – Charan
 
-A modern, animated 3D developer portfolio built with React, Three.js, TailwindCSS, and motion effects — designed to help you stand out and showcase your skills creatively.
+A modern, animated **3D developer portfolio** built using React, Three.js, TailwindCSS, Framer Motion, and Vite — designed to creatively showcase my development projects, skills, and achievements.
 
-![3d Portfolio Screenshot GitHub](https://github.com/user-attachments/assets/9b0ed20e-074e-4f2a-81d8-20c9da751e9e)
+<!-- ![3D Portfolio Screenshot](https://github.com/Chandi977/Portfolio/assets/preview.png) -->
 
 ---
 
@@ -13,6 +13,7 @@ A modern, animated 3D developer portfolio built with React, Three.js, TailwindCS
 - [Project Structure](#-project-structure)
 - [Getting Started](#-getting-started)
 - [Assets](#-assets)
+- [Projects](#-projects)
 - [Contact Me](#-contact-me)
 - [Suggestions or Feedback](#-suggestions-or-feedback)
 - [Like This Project?](#-like-this-project)
@@ -21,28 +22,28 @@ A modern, animated 3D developer portfolio built with React, Three.js, TailwindCS
 
 ## ✨ Features
 
-- 🔥 3D visuals powered by **React Three Fiber** and **Drei**
-- ⚡ Smooth transitions and scroll-based animations using **Framer Motion**
-- 🎨 Clean, responsive UI with **TailwindCSS**
-- 💌 Working contact form using **EmailJS**
-- 🧱 Beautiful UI enhancements with **Aceternity UI** and **Magic UI**
-- 🚀 Lightning-fast development with **Vite**
+- 🌐 3D experience powered by **React Three Fiber** and **Drei**
+- 💫 Smooth scroll-based animations with **Framer Motion**
+- 🧩 Modular sections: Hero, Projects, About, Contact, etc.
+- 💌 Working contact form with **EmailJS**
+- 🧱 Enhanced UI with **Aceternity UI** and **Magic UI**
+- ⚡ Super fast dev using **Vite**
 
 ---
 
 ## 🛠 Tech Stack
 
-| Tech              | Description                           |
-|-------------------|---------------------------------------|
-| React             | Front-end JavaScript library          |
-| Vite              | Fast bundler and dev environment      |
-| TailwindCSS       | Utility-first CSS framework           |
-| React Three Fiber | 3D rendering with Three.js in React   |
-| Drei              | Helpers and abstractions for R3F      |
-| Framer Motion     | Animation library for React           |
-| EmailJS           | Form handling and email integration   |
-| Aceternity UI     | Custom UI components                  |
-| Magic UI          | Prebuilt UI elements and design extras|
+| Tech              | Description                            |
+| ----------------- | -------------------------------------- |
+| React             | Front-end library for UI components    |
+| Vite              | Blazing-fast dev server and bundler    |
+| TailwindCSS       | Utility-first CSS for rapid UI design  |
+| React Three Fiber | 3D rendering abstraction over Three.js |
+| Drei              | R3F helpers to simplify 3D code        |
+| Framer Motion     | React animation and transition library |
+| EmailJS           | Contact form integration               |
+| Aceternity UI     | Custom animated UI components          |
+| Magic UI          | Pre-designed aesthetic components      |
 
 ---
 
@@ -50,16 +51,16 @@ A modern, animated 3D developer portfolio built with React, Three.js, TailwindCS
 
 ```bash
 ├── public/
-│   ├── assets/             # Images, textures, models
-│   ├── models/             # 3D Astronaut model
-│   └── vite.svg
+│   ├── assets/             # Static images and icons
+│   ├── models/             # 3D astronaut or other GLTF models
+│   └── favicon.svg
 ├── src/
-│   ├── components/         # Reusable components
-│   ├── constants/          # Reusable datas
-│   ├── sections/           # Portfolio sections (Hero, About, etc.)
-│   ├── App.jsx             # Main app file
-│   ├── index.css           # Tailwind css
-│   └── main.jsx            # Entry point
+│   ├── components/         # Buttons, Cards, etc.
+│   ├── constants/          # Data arrays like projects, socials
+│   ├── sections/           # Hero, Projects, About, Contact
+│   ├── App.jsx             # Root component
+│   ├── index.css           # Tailwind styles
+│   └── main.jsx            # App entry point
 ├── tailwind.config.js
 └── vite.config.js
 ```
@@ -67,50 +68,74 @@ A modern, animated 3D developer portfolio built with React, Three.js, TailwindCS
 ---
 
 ## 🚀 Getting Started
-1. Clone the Repository
+
+**Clone the repo:**
+
 ```bash
-git clone https://github.com/Ali-Sanati/Portfolio.git
+git clone https://github.com/Chandi977/Portfolio-main.git
 cd Portfolio
 ```
-2. Install Dependencies
+
+**Install dependencies:**
+
 ```bash
 npm install
 ```
-3. Run the Development Server
+
+**Run the dev server:**
+
 ```bash
 npm run dev
 ```
-The app will be available at http://localhost:5173.
+
+Then visit: [http://localhost:5173](http://localhost:5173)
 
 ---
 
 ## 🔗 Assets
-Assets used in the project can be found [here](https://github.com/user-attachments/files/19820923/public.zip)
+
+All 3D models and images can be replaced inside the `public/assets/` and `public/models/` folders.
+
+---
+
+## 📦 Projects Showcased
+
+| Project                               | Description                                                   |
+| ------------------------------------- | ------------------------------------------------------------- |
+| Zenith - AR Emergency Route Simulator | MERN + Google Maps + A\*, real-time tracking, Firebase alerts |
+| Netflix Clone                         | React + Firebase + Tailwind-based UI streaming clone          |
+| Banjara Tour & Travel                 | PHP project with booking, static pages, user forms            |
+| Speakbot                              | Command-following bot with weather, wiki, movie APIs          |
+
+More coming soon... ✨
 
 ---
 
 ## 📬 Contact Me
-[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://www.instagram.com/ali.sanatidev/reels/) 
-[![Static Badge](https://img.shields.io/badge/Youtube-%23FF0033?style=flat&logo=youtube)](https://www.youtube.com/channel/UCZhtUWTtk3bGJiMPN9T4HWA)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ali-sanati/) 
+
+- **Email:** charan.f.sde@gmail.com
+- **Phone:** +91 8757059888
+- **LinkedIn:** [Connect with me](https://www.linkedin.com/in/your-linkedin-profile)
 
 ---
 
 ## 💡 Suggestions or Feedback?
-Leave a comment on the [YouTube video](https://youtu.be/S9UQItTpwUQ) or open an issue here on GitHub.<br/>
-👉 What should I build next?
 
-- A beautiful Landing Page
+Open an issue or connect on LinkedIn if you'd like to collaborate or give feedback!
 
-- A complete E-commerce site
+---
 
-- A fun App Clone (YouTube, Netflix, etc.)
+## 🗳️ What should I build next?
 
-Or another interactive Portfolio
+- A SaaS-style Dashboard
+- Real-time Chat App
+- Job Board App
+- Zhingat Clone with Admin Panel and QR Ordering
 
-Let me know!
+Let me know your thoughts!
 
 ---
 
 ## ⭐ Like This Project?
-Star the repo and [subscribe](https://www.youtube.com/channel/UCZhtUWTtk3bGJiMPN9T4HWA??sub_confirmation=1) to the YouTube channel for more dev content!
+
+Give it a star on [GitHub](https://github.com/Chandi977/Portfolio-main)!
