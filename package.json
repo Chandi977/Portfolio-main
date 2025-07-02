@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "react-tilt": "^1.0.2",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.0.11",
     "@emailjs/browser": "^4.4.1",
     "@gsap/react": "^2.1.2",
     "@react-three/drei": "^10.0.0",
@@ -22,7 +25,6 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-responsive": "^10.0.0",
-    "react-tilt": "^1.0.2",
     "tailwind-merge": "^3.0.1",
     "tailwindcss": "^4.0.7",
     "three": "^0.173.0"
