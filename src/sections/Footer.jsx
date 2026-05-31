@@ -17,8 +17,8 @@ gsap.registerPlugin(ScrollTrigger);
    assembles as the user scrolls into the chapter.
    ============================================================ */
 
-const SIGNOFF = "THANKS  FOR  SCROLLING  THROUGH.";
-const SUBLINE = "END · OF · LOG";
+const SIGNOFF = "ENGINEERED  TO  SCALE.";
+const SUBLINE = "PRODUCTION PORTFOLIO";
 
 const Footer = () => {
   const ref = useRef(null);
@@ -92,7 +92,12 @@ const Footer = () => {
       },
     });
 
-    return () => st.kill();
+    const refreshFrame = requestAnimationFrame(() => ScrollTrigger.refresh());
+
+    return () => {
+      cancelAnimationFrame(refreshFrame);
+      st.kill();
+    };
   }, []);
 
   const chars = Array.from(SIGNOFF);
@@ -252,7 +257,7 @@ const CallsignBadge = memo(
           <span className="absolute inset-1.5 bg-lavender/80" />
         </span>
         <div className="flex flex-col items-start leading-none">
-          <MonoLabel tone="lavender">DEVELOPER</MonoLabel>
+          <MonoLabel tone="lavender">FULL STACK ENGINEER</MonoLabel>
           <span className="font-display-tight italic text-2xl text-white tracking-[-0.02em] mt-1">
             CHARAN · DEV
           </span>

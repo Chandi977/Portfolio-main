@@ -1,4 +1,4 @@
-import { memo, useRef, useEffect, useCallback } from "react";
+import { memo, useRef, useEffect } from "react";
 import OrbitalDial from "../components/starlog/OrbitalDial";
 import Telemetry from "../components/starlog/Telemetry";
 import WordMorph from "../components/starlog/WordMorph";
@@ -8,7 +8,6 @@ import {
   PinnedStage,
   Beat,
   useSubProgress,
-  useProgressStyle,
 } from "../components/starlog/ds";
 import { interpolate } from "../hooks/useGSAPBeat";
 
@@ -82,6 +81,7 @@ const BootBeat = memo(function BootBeat({ progress }) {
   const groupRef = useRef(null);
   const ringRef = useRef(null);
   const labelRef = useRef(null);
+  const statusRef = useRef(null);
   const typeRef = useRef(null);
 
   useEffect(() => {
@@ -90,8 +90,9 @@ const BootBeat = memo(function BootBeat({ progress }) {
       const group = groupRef.current;
       const ring = ringRef.current;
       const label = labelRef.current;
+      const status = statusRef.current;
       const typeEl = typeRef.current;
-      if (!group || !ring || !label || !typeEl) return;
+      if (!group || !ring || !label || !status || !typeEl) return;
 
       // Boot group stays fully visible — outer Beat handles fade-out.
       group.style.opacity = 1;
@@ -104,6 +105,7 @@ const BootBeat = memo(function BootBeat({ progress }) {
 
       // Label opacity — fade in only, hold at peak
       label.style.opacity = interpolate(p, [0, 0.2], [0, 1]);
+      status.style.opacity = interpolate(p, [0.15, 0.35], [0, 1]);
 
       // Type-writer width — completes a touch earlier to give it dwell time
       typeEl.style.width = `${interpolate(p, [0.1, 0.85], [0, 100])}%`;
@@ -138,7 +140,7 @@ const BootBeat = memo(function BootBeat({ progress }) {
         </div>
         <div
           style={{ opacity: 0 }}
-          ref={labelRef}
+          ref={statusRef}
           className="font-mono-tight text-[11px] text-aqua/90 overflow-hidden whitespace-nowrap"
         >
           <span

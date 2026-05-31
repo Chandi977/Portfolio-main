@@ -2,9 +2,9 @@ import { memo, useRef, useEffect } from "react";
 import { interpolate } from "../../hooks/useGSAPBeat";
 
 const LINES = [
-  ["Built", "from", "latency,"],
-  ["version-control,", "and"],
-  ["03:00", "AM", "commits."],
+  ["Built", "for", "demos,"],
+  ["scale,", "and"],
+  ["real", "product", "moments."],
 ];
 
 const FLAT = LINES.flat();

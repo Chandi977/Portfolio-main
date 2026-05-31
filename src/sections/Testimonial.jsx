@@ -4,9 +4,6 @@ import {
   PinnedStage,
   Beat,
   WordReveal,
-  MonoLabel,
-  StatusDot,
-  Hairline,
   useSubProgress,
 } from "../components/starlog/ds";
 import { interpolate } from "../hooks/useGSAPBeat";
@@ -47,12 +44,9 @@ const TestimonialBeats = ({ p }) => {
       {/* ════ BEAT 1 — INCOMING ════ */}
       <Beat progress={p} range={[0, 0, 0.15, 0.20]}>
         <div className="absolute inset-0 flex flex-col items-center justify-center px-6 md:px-12 text-center">
-          <div className="flex items-center gap-3 mb-8">
-            <StatusDot tone="coral" />
-            <MonoLabel tone="coral">::REVIEWS · {reviews.length} RECEIVED</MonoLabel>
-            <span className="block w-6 h-px bg-white/20" />
-            <MonoLabel tone="aqua">STREAM · LIVE</MonoLabel>
-          </div>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/[0.08] bg-white/[0.02] font-body text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-6">
+            Testimonials
+          </span>
           <h2 className="font-display-tight italic text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1] tracking-[-0.04em] text-white max-w-5xl">
             <WordReveal
               progress={introP}
@@ -61,8 +55,8 @@ const TestimonialBeats = ({ p }) => {
             />
           </h2>
           <FadeIn progress={introP} start={0.55} end={0.72}>
-            <p className="mt-10 font-mono-tight text-xs tracking-[0.4em] text-coral/80 uppercase">
-              ↓ SCROLL TO READ REVIEWS
+            <p className="mt-10 font-body text-xs font-semibold tracking-widest text-neutral-400 uppercase">
+              Scroll to read
             </p>
           </FadeIn>
         </div>
@@ -71,21 +65,8 @@ const TestimonialBeats = ({ p }) => {
       {/* ════ BEAT 2 — FEED (scroll-driven) ════ */}
       <Beat progress={p} range={[0.15, 0.20, 0.84, 0.89]}>
         <div className="absolute inset-0 flex flex-col justify-center">
-          {/* Header tag */}
-          <FadeIn progress={feedP} start={0} end={0.1}>
-            <div className="absolute top-24 left-1/2 -translate-x-1/2 flex items-center gap-3 z-30">
-              <StatusDot tone="aqua" />
-              <MonoLabel tone="aqua">::FEED · LIVE</MonoLabel>
-            </div>
-          </FadeIn>
-
           {/* Band A */}
           <div className="relative mb-6 md:mb-10">
-            <div className="flex items-center gap-4 mb-3 px-6">
-              <MonoLabel tone="coral">▼ STREAM · A · FEATURED</MonoLabel>
-              <span className="flex-1 h-px bg-coral/20" />
-              <MonoLabel>{firstHalf.length} REVIEWS</MonoLabel>
-            </div>
             <div className="relative overflow-hidden">
               <BandStrip items={firstHalf} feedP={feedP} direction={1} band="A" />
             </div>
@@ -93,11 +74,6 @@ const TestimonialBeats = ({ p }) => {
 
           {/* Band B (counter-direction) */}
           <div className="relative">
-            <div className="flex items-center gap-4 mb-3 px-6">
-              <MonoLabel tone="aqua">▲ STREAM · B · ADDITIONAL</MonoLabel>
-              <span className="flex-1 h-px bg-aqua/20" />
-              <MonoLabel>{secondHalf.length} REVIEWS</MonoLabel>
-            </div>
             <div className="relative overflow-hidden">
               <BandStrip items={secondHalf} feedP={feedP} direction={-1} band="B" />
             </div>
@@ -106,12 +82,6 @@ const TestimonialBeats = ({ p }) => {
           {/* Edge fades */}
           <div className="absolute inset-y-0 left-0 w-24 md:w-40 pointer-events-none bg-gradient-to-r from-primary to-transparent z-20" />
           <div className="absolute inset-y-0 right-0 w-24 md:w-40 pointer-events-none bg-gradient-to-l from-primary to-transparent z-20" />
-
-          {/* Central scanline */}
-          <div
-            aria-hidden
-            className="absolute left-1/2 top-24 bottom-24 w-px bg-gradient-to-b from-transparent via-coral/30 to-transparent pointer-events-none z-30"
-          />
         </div>
       </Beat>
 
@@ -185,107 +155,62 @@ const InterceptCard = memo(function InterceptCard({ review, index, feedP, band }
 
   const tone = ["lavender", "aqua", "coral", "mint"][index % 4];
   const toneClasses = {
-    lavender: { border: "border-lavender/30", text: "text-lavender", glow: "shadow-[0_0_30px_-10px_rgba(122,87,219,0.7)]" },
-    aqua: { border: "border-aqua/30", text: "text-aqua", glow: "shadow-[0_0_30px_-10px_rgba(51,194,204,0.7)]" },
-    coral: { border: "border-coral/30", text: "text-coral", glow: "shadow-[0_0_30px_-10px_rgba(234,72,132,0.7)]" },
-    mint: { border: "border-mint/30", text: "text-mint", glow: "shadow-[0_0_30px_-10px_rgba(87,219,150,0.7)]" },
+    lavender: { border: "border-lavender/10 hover:border-lavender/30", text: "text-lavender", glow: "shadow-[0_0_30px_-10px_rgba(122,87,219,0.2)]", dot: "bg-lavender" },
+    aqua: { border: "border-aqua/10 hover:border-aqua/30", text: "text-aqua", glow: "shadow-[0_0_30px_-10px_rgba(51,194,204,0.2)]", dot: "bg-aqua" },
+    coral: { border: "border-coral/10 hover:border-coral/30", text: "text-coral", glow: "shadow-[0_0_30px_-10px_rgba(234,72,132,0.2)]", dot: "bg-coral" },
+    mint: { border: "border-mint/10 hover:border-mint/30", text: "text-mint", glow: "shadow-[0_0_30px_-10px_rgba(87,219,150,0.2)]", dot: "bg-mint" },
   }[tone];
-
-  const buildId = `v${(1 + index * 0.1).toFixed(1)}.${String(index).padStart(2, "0")}`;
 
   return (
     <figure
-      className={`relative shrink-0 w-72 h-auto starlog-clip border ${toneClasses.border} bg-gradient-to-b from-midnight/85 to-primary/85 px-4 py-4 ${toneClasses.glow}`}
+      className={`relative shrink-0 w-80 h-auto bg-white/[0.02] border ${toneClasses.border} rounded-2xl px-6 py-6 backdrop-blur-md transition-all duration-300 ${toneClasses.glow}`}
     >
-      {/* Capture scanline overlay */}
+      {/* Highlight glow layer driven by scroll position */}
       <div
         ref={glowRef}
         aria-hidden
         style={{ opacity: 0 }}
-        className="absolute inset-0 pointer-events-none"
-      >
-        <div className="absolute inset-x-0 top-0 h-px bg-white/80" />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-white/80" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.08] via-transparent to-white/[0.08]" />
-      </div>
-
-      <div className="flex items-center justify-between mb-3 pb-2 border-b border-white/5">
-        <div className="flex items-center gap-2">
-          <StatusDot tone={tone} />
-          <span className={`font-mono-tight text-[10px] tracking-[0.22em] ${toneClasses.text}`}>
-            {buildId}
-          </span>
-        </div>
-        <span className="font-mono-tight text-[9px] tracking-[0.3em] text-neutral-500">▌▌▌</span>
-      </div>
+        className="absolute inset-0 pointer-events-none rounded-2xl bg-gradient-to-br from-white/[0.04] to-transparent border border-white/[0.12] transition-opacity duration-300"
+      />
 
       <div className="flex items-center gap-3">
         <div className="relative">
           <img
             src={review.img}
             alt=""
-            width="36"
-            height="36"
+            width="40"
+            height="40"
             className="rounded-full border border-white/10 bg-white/5"
             loading="lazy"
             decoding="async"
           />
-          <span className={`absolute -bottom-0.5 -right-0.5 block w-2 h-2 rounded-full ${toneClasses.text.replace("text-", "bg-")}`} />
+          <span className={`absolute -bottom-0.5 -right-0.5 block w-2.5 h-2.5 rounded-full border border-primary ${toneClasses.dot}`} />
         </div>
         <div className="flex flex-col leading-tight">
-          <figcaption className="text-sm font-semibold text-white">{review.name}</figcaption>
-          <span className="font-mono-tight text-[10px] tracking-[0.18em] text-white/40">
+          <figcaption className="text-sm font-semibold text-white font-body">{review.name}</figcaption>
+          <span className="text-[11px] text-neutral-400 font-body mt-0.5">
             {review.username}
           </span>
         </div>
       </div>
 
-      <blockquote className="mt-3 text-sm text-neutral-200 leading-relaxed font-display-tight">
-        <span className={toneClasses.text}>"</span>
-        {review.body}
-        <span className={toneClasses.text}>"</span>
+      <blockquote className="mt-4 text-[13px] sm:text-sm text-neutral-300 leading-relaxed font-body">
+        "{review.body}"
       </blockquote>
-
-      <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-between">
-        <span className="font-mono-tight text-[9px] tracking-[0.25em] text-neutral-500">
-          REVIEW · 07.{String(index + 1).padStart(2, "0")}{band}
-        </span>
-        <span className={`font-mono-tight text-[9px] tracking-[0.25em] ${toneClasses.text}`}>OK</span>
-      </div>
     </figure>
   );
 });
 
 /* ---------- SignoffBeat ---------- */
 const SignoffBeat = memo(function SignoffBeat({ outroP }) {
-  const hairRef = useRef(null);
-
-  useEffect(() => {
-    if (!outroP) return;
-    return outroP.onChange((p) => {
-      if (hairRef.current) {
-        hairRef.current.style.transform = `scaleX(${interpolate(p, [0.3, 1], [0, 1])})`;
-      }
-    });
-  }, [outroP]);
-
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center px-6 md:px-12 text-center">
-      <MonoLabel tone="coral" className="mb-6">END · MODULE 07</MonoLabel>
+      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/[0.08] bg-white/[0.02] font-body text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-6">
+        Log Complete
+      </span>
       <h3 className="font-display-tight italic text-4xl md:text-6xl text-white tracking-[-0.04em] leading-[1.05] max-w-3xl mb-8">
-        {reviews.length} reviews logged. Feed stays open for more.
+        {reviews.length} notes received. Open for new projects.
       </h3>
-      <div
-        ref={hairRef}
-        style={{ transformOrigin: "center", transform: "scaleX(0)" }}
-        className="mt-6 w-[min(640px,80vw)]"
-      >
-        <Hairline />
-        <div className="mt-3 flex justify-between font-mono-tight text-[10px] tracking-[0.4em] text-neutral-500">
-          <span>07 · REVIEWS</span>
-          <span>↓ 08 · CONTACT</span>
-        </div>
-      </div>
     </div>
   );
 });

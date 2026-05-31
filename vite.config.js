@@ -6,42 +6,46 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
-    // Enable minification and tree-shaking
     minify: "terser",
     terserOptions: {
       compress: {
-        drop_console: true, // Remove console.logs in production
+        drop_console: true,
         drop_debugger: true,
       },
     },
-    // Code splitting configuration
     rollupOptions: {
       output: {
         manualChunks: {
-          // Split vendor chunks for better caching
+          // Core React — cached aggressively, changes rarely
           "react-vendor": ["react", "react-dom"],
-          // Keep Three.js ecosystem and maath together to avoid circular chunks
+          // Animation engine — large but stable
+          "motion-vendor": ["motion"],
+          // GSAP + smooth scroll — loaded early, split for independent caching
+          "gsap-vendor": ["gsap", "lenis"],
+          // Three.js ecosystem — heaviest chunk, rarely changes
           "three-vendor": [
             "three",
             "@react-three/fiber",
             "@react-three/drei",
             "maath",
           ],
-          "motion-vendor": ["motion"],
-          utils: ["tailwind-merge"],
+          // Small UI libs — cobe globe, tilt, merge util
+          "ui-vendor": ["cobe", "react-tilt", "tailwind-merge"],
+          // EmailJS — only needed in the Contact section (lazy)
+          "email-vendor": ["@emailjs/browser"],
         },
       },
     },
-    // Increase chunk size warning limit
-    chunkSizeWarningLimit: 600,
-    // Enable source maps for debugging (optional, can disable for smaller builds)
+    chunkSizeWarningLimit: 650,
     sourcemap: false,
+    // Preload critical vendor chunks immediately
+    modulePreload: {
+      polyfill: true,
+    },
   },
-  // Optimize dependencies
   optimizeDeps: {
-    include: ["react", "react-dom", "motion", "three"],
+    include: ["react", "react-dom", "motion", "three", "gsap"],
   },
-  // Enable CSS code splitting
   css: {
     devSourcemap: true,
   },

@@ -47,10 +47,6 @@ const ProjectsBeats = ({ p }) => {
       {/* ════════ INTRO BEAT ════════ */}
       <Beat progress={p} range={[0, 0, INTRO_END - 0.01, INTRO_END + 0.03]}>
         <div className="absolute inset-0 flex flex-col items-center justify-center px-6 md:px-12 text-center">
-          <div className="flex items-center gap-3 mb-8">
-            <StatusDot tone="coral" />
-            <MonoLabel tone="coral">::REPOS · 05.00 · {N} BUILDS</MonoLabel>
-          </div>
           <h2 className="font-display-tight text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-[-0.04em] text-white max-w-5xl">
             <WordReveal
               progress={introP}
@@ -58,16 +54,8 @@ const ProjectsBeats = ({ p }) => {
               revealWindow={0.85}
             />
           </h2>
-          <FadeIn progress={introP} start={0.7} end={1}>
-            <p className="mt-10 font-mono-tight text-xs tracking-[0.4em] text-aqua/80 uppercase">
-              ↓ KEEP SCROLLING TO STEP THROUGH THE COMMITS
-            </p>
-          </FadeIn>
         </div>
       </Beat>
-
-      {/* Persistent case-index ticker (visible during deploys) */}
-      <CaseTicker p={p} />
 
       {/* ════════ ONE BEAT PER PROJECT ════════ */}
       {myProjects.map((project, i) => {
@@ -89,10 +77,6 @@ const ProjectsBeats = ({ p }) => {
       <Beat progress={p} range={[0.94, 0.97, 1.0, 1.0]}>
         <div className="absolute bottom-24 left-1/2 -translate-x-1/2 w-[min(640px,80vw)] z-30">
           <Hairline />
-          <div className="mt-3 flex justify-between font-mono-tight text-[10px] tracking-[0.4em] text-neutral-500">
-            <span>END · MODULE 05</span>
-            <span>↓ 06 · EXPERIENCE</span>
-          </div>
         </div>
       </Beat>
     </>
@@ -198,17 +182,7 @@ const ProjectBeat = memo(function ProjectBeat({ project, index, p, start, end })
       style={{ opacity: 0, willChange: "transform, opacity" }}
       className="absolute inset-0 flex items-center"
     >
-      {/* GIANT INDEX */}
-      <div
-        ref={indexRef}
-        aria-hidden
-        style={{ opacity: 0, willChange: "transform" }}
-        className="absolute left-[-8vw] top-1/2 -translate-y-1/2 font-display-tight tracking-[-0.07em] text-white/[0.04] select-none pointer-events-none"
-      >
-        <span className="text-[44vh] leading-none italic">
-          {String(index + 1).padStart(2, "0")}
-        </span>
-      </div>
+      {/* GIANT INDEX removed */}
 
       <div className="relative max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 px-6 lg:px-16 py-24">
         {/* IMAGE */}
@@ -224,18 +198,7 @@ const ProjectBeat = memo(function ProjectBeat({ project, index, p, start, end })
             decoding="async"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 starlog-scanlines opacity-[0.08]" aria-hidden />
           <div className="absolute inset-0 bg-gradient-to-tr from-primary/60 via-transparent to-transparent pointer-events-none" />
-
-          <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
-            <MonoLabel tone="lavender">LIVE · PREVIEW</MonoLabel>
-            <span className="block w-2 h-2 rounded-full bg-coral animate-pulse" />
-          </div>
-
-          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between z-10">
-            <MonoLabel>{project.category || "WEB"}</MonoLabel>
-            <MonoLabel tone="aqua">{project.stats?.year || "—"}</MonoLabel>
-          </div>
         </div>
 
         {/* INFO */}
@@ -250,8 +213,7 @@ const ProjectBeat = memo(function ProjectBeat({ project, index, p, start, end })
               <span className="text-white/40">.</span>
             </span>
             <div className="flex flex-col">
-              <MonoLabel tone="coral">CASE · 05.{String(index + 1).padStart(2, "0")}</MonoLabel>
-              <MonoLabel>{project.stats?.role || "DEV"}</MonoLabel>
+              <span className="font-body text-xs font-semibold text-neutral-400 uppercase tracking-wider">{project.stats?.role || "DEV"}</span>
             </div>
           </div>
 
@@ -280,7 +242,7 @@ const ProjectBeat = memo(function ProjectBeat({ project, index, p, start, end })
                 href={project.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 border border-lavender/40 hover:border-lavender hover:bg-lavender/5 px-4 py-2 font-mono-tight text-[11px] tracking-[0.25em] text-white uppercase transition-all"
+                className="inline-flex items-center gap-3 border border-lavender/40 hover:border-lavender hover:bg-lavender/5 px-4 py-2 rounded-lg font-body text-xs font-semibold tracking-wider text-white uppercase transition-all"
               >
                 VIEW · LIVE <span className="text-lavender">↗</span>
               </a>
@@ -290,7 +252,7 @@ const ProjectBeat = memo(function ProjectBeat({ project, index, p, start, end })
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 border border-white/15 hover:border-white/40 px-4 py-2 font-mono-tight text-[11px] tracking-[0.25em] text-white uppercase transition-all"
+                className="inline-flex items-center gap-3 border border-white/15 hover:border-white/40 px-4 py-2 rounded-lg font-body text-xs font-semibold tracking-wider text-white uppercase transition-all"
               >
                 SOURCE · GIT <span className="text-neutral-400">↗</span>
               </a>

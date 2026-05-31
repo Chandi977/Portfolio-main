@@ -22,10 +22,10 @@ import { interpolate } from "../hooks/useGSAPBeat";
    ============================================================ */
 
 const WORKFLOW = [
-  { code: "01", label: "DISCOVER", desc: "Goals, constraints, scope" },
-  { code: "02", label: "SCOPE", desc: "Milestones, contracts, risks" },
-  { code: "03", label: "BUILD", desc: "Sprints, demos, iteration" },
-  { code: "04", label: "SHIP", desc: "Deploy, harden, handoff" },
+  { code: "01", label: "LOCK IN", desc: "Goal, audience, scope" },
+  { code: "02", label: "MAP IT", desc: "Features, risks, timeline" },
+  { code: "03", label: "BUILD IT", desc: "Sprints, previews, feedback" },
+  { code: "04", label: "LAUNCH", desc: "Deploy, polish, handoff" },
 ];
 
 const Freelance = () => (
@@ -48,10 +48,6 @@ const Freelance = () => (
    STATUS   0.86 → 1.00
    Each beat's sub-progress range matches its peak window exactly. */
 const FreelanceBeats = ({ p }) => {
-  // Sub-progress completes ~70% through each beat's peak window so reveals
-  // finish with dwell time before the cross-fade to the next beat.
-  // Beat ranges share their fade boundaries (peakEnd of one = fadeInStart of
-  // the next) so beats cross-fade smoothly without a blank gap.
   const beat1P = useSubProgress(p, 0.00, 0.10);
   const deckP  = useSubProgress(p, 0.22, 0.58);
   const beat3P = useSubProgress(p, 0.66, 0.82);
@@ -62,22 +58,16 @@ const FreelanceBeats = ({ p }) => {
       {/* ════════ BEAT 1 — INTRO ════════ */}
       <Beat progress={p} range={[0, 0, 0.16, 0.22]}>
         <div className="absolute inset-0 flex flex-col items-center justify-center px-6 md:px-12 text-center">
-          <div className="flex items-center gap-3 mb-8">
-            <StatusDot tone="mint" />
-            <MonoLabel tone="mint">ACCEPTING · Q2 / 2026</MonoLabel>
-            <span className="block w-6 h-px bg-white/20" />
-            <MonoLabel tone="aqua">::PIPELINE · OPEN</MonoLabel>
-          </div>
           <h2 className="font-display-tight text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-[-0.04em] text-white max-w-5xl">
             <WordReveal
               progress={beat1P}
-              text="Available for selected freelance work — ship-grade systems, end to end."
+              text="Available for remote builds - enterprise-grade software, end to end."
               revealWindow={0.85}
             />
           </h2>
           <FadeIn progress={beat1P} start={0.55} end={0.75}>
             <p className="mt-8 text-neutral-400 max-w-2xl font-display-tight italic">
-              Three engagement modes. Scroll to step through each one.
+              Choose the model that fits your business. Scroll down to see options.
             </p>
           </FadeIn>
         </div>
@@ -138,10 +128,6 @@ const DeckBeat = memo(function DeckBeat({ deckP }) {
 
   return (
     <div className="absolute inset-0">
-      <div className="absolute top-24 left-1/2 -translate-x-1/2 flex items-center gap-3 z-30">
-        <StatusDot tone="aqua" />
-        <MonoLabel tone="aqua">::SERVICES · 04.02 · 3 MODULES</MonoLabel>
-      </div>
 
       {/* Centered frame — viewport-fixed target slot for the active card */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10">
@@ -159,8 +145,6 @@ const DeckBeat = memo(function DeckBeat({ deckP }) {
           pDeck={deckP}
         />
       ))}
-
-      <CardCounter pDeck={deckP} />
     </div>
   );
 });
@@ -220,10 +204,6 @@ const ServiceCard = memo(function ServiceCard({ service, index, total, spacing, 
         <span className={`font-display-tight text-5xl ${toneClasses.text} tracking-[-0.04em]`}>
           0{index + 1}
         </span>
-        <div className="flex items-center gap-2">
-          <StatusDot tone={tone} />
-          <MonoLabel tone={tone}>MOD · 04.0{index + 1}</MonoLabel>
-        </div>
       </div>
 
       <h3 className="font-display-tight text-2xl md:text-3xl text-white tracking-[-0.03em] mb-4">
@@ -245,34 +225,16 @@ const ServiceCard = memo(function ServiceCard({ service, index, total, spacing, 
         ))}
       </ul>
 
-      <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-        <MonoLabel>AVAILABLE</MonoLabel>
-        <MonoLabel tone={tone}>↗ HIRE</MonoLabel>
+      <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between font-body text-xs font-semibold text-neutral-400">
+        <span>AVAILABLE</span>
+        <span className={toneClasses.text}>↗ HIRE</span>
       </div>
     </article>
   );
 });
 
-/* ---------- CardCounter ---------- */
-const CardCounter = memo(function CardCounter({ pDeck }) {
-  const [v, setV] = useState(1);
-  useEffect(() => {
-    if (!pDeck) return;
-    return pDeck.onChange((p) => {
-      setV(Math.min(3, Math.max(1, Math.round(p * 2) + 1)));
-    });
-  }, [pDeck]);
-
-  return (
-    <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex items-center gap-4">
-      <MonoLabel>NOW VIEWING</MonoLabel>
-      <span className="font-display-tight text-3xl text-lavender tabular-nums">
-        {String(v).padStart(2, "0")}
-      </span>
-      <span className="text-neutral-500 font-mono-tight">/ 03</span>
-    </div>
-  );
-});
+/* ---------- CardCounter removed ---------- */
+const CardCounter = () => null;
 
 /* ---------- WorkflowBeat ---------- */
 const WorkflowBeat = memo(function WorkflowBeat({ beat3P }) {
@@ -292,13 +254,8 @@ const WorkflowBeat = memo(function WorkflowBeat({ beat3P }) {
 
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center px-6 md:px-12">
-      <div ref={headerRef} style={{ opacity: 0 }} className="flex items-center gap-3 mb-8">
-        <StatusDot tone="coral" />
-        <MonoLabel tone="coral">::PROJECT · WORKFLOW</MonoLabel>
-      </div>
-
       <h3 className="font-display-tight text-3xl md:text-5xl text-white tracking-[-0.035em] mb-14 text-center">
-        How it goes when we work together.
+        How the collab turns into a live build.
       </h3>
 
       <div className="relative w-full max-w-5xl">
@@ -316,10 +273,6 @@ const WorkflowBeat = memo(function WorkflowBeat({ beat3P }) {
           ))}
         </div>
       </div>
-
-      <p ref={noteRef} style={{ opacity: 0 }} className="mt-14 text-center text-neutral-500 font-mono-tight text-xs tracking-[0.32em] uppercase">
-        ◇ AGILE SPRINTS · WORKING CODE · CONTINUOUS DEPLOY
-      </p>
     </div>
   );
 });
@@ -365,7 +318,7 @@ const WorkflowNode = memo(function WorkflowNode({ step, index, pBeat }) {
       >
         <span className={`absolute inset-0 rounded-full ${bgC} opacity-30 animate-ping`} />
       </span>
-      <span className={`mt-5 font-mono-tight text-[10px] tracking-[0.3em] ${textC}`}>
+      <span className={`mt-5 font-body text-xs font-bold tracking-wider ${textC}`}>
         {step.code}
       </span>
       <h4 className="mt-1 font-display-tight text-xl md:text-2xl text-white tracking-[-0.02em]">
@@ -397,10 +350,8 @@ const StatusBeat = memo(function StatusBeat({ beat4P }) {
 
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center px-6 md:px-12">
-      <MonoLabel tone="mint" className="mb-6">END · MODULE 04</MonoLabel>
-
       <h3 className="font-display-tight text-3xl md:text-5xl text-white tracking-[-0.035em] text-center max-w-3xl mb-10">
-        Availability and engagement models.
+        Availability, formats, and response time.
       </h3>
 
       <div
@@ -429,10 +380,6 @@ const StatusBeat = memo(function StatusBeat({ beat4P }) {
 
       <div ref={hairRef} style={{ transformOrigin: "center", transform: "scaleX(0)" }} className="mt-12 w-[min(640px,80vw)]">
         <Hairline />
-        <div className="mt-3 flex justify-between font-mono-tight text-[10px] tracking-[0.4em] text-neutral-500">
-          <span>04 · SERVICES</span>
-          <span>↓ 05 · DEPLOYMENTS</span>
-        </div>
       </div>
     </div>
   );

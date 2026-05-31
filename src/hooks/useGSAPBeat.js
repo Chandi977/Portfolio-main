@@ -129,12 +129,27 @@ export function interpolate(progress, inputs, outputs) {
   if (inputs.length !== outputs.length || inputs.length < 2) {
     return outputs[0] ?? 0;
   }
-  // Clamp to range
-  if (progress <= inputs[0]) return outputs[0];
-  if (progress >= inputs[inputs.length - 1]) return outputs[outputs.length - 1];
+
+  if (progress <= inputs[0]) {
+    let lastStart = 0;
+    while (lastStart + 1 < inputs.length && inputs[lastStart + 1] === inputs[0]) {
+      lastStart += 1;
+    }
+    return outputs[lastStart];
+  }
+
+  const lastInput = inputs[inputs.length - 1];
+  if (progress >= lastInput) {
+    let firstEnd = inputs.length - 1;
+    while (firstEnd > 0 && inputs[firstEnd - 1] === lastInput) {
+      firstEnd -= 1;
+    }
+    return outputs[firstEnd];
+  }
 
   // Find segment
   for (let i = 0; i < inputs.length - 1; i++) {
+    if (inputs[i] === inputs[i + 1]) continue;
     if (progress >= inputs[i] && progress <= inputs[i + 1]) {
       const t = (progress - inputs[i]) / (inputs[i + 1] - inputs[i]);
       return outputs[i] + t * (outputs[i + 1] - outputs[i]);

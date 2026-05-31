@@ -1,6 +1,5 @@
 
-import { memo, useRef, useEffect } from "react";
-import { motion, useInView } from "motion/react";
+import { memo, useRef, useEffect, forwardRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { experiences } from "../constants";
@@ -11,14 +10,15 @@ import {
   StatusDot,
   Hairline,
 } from "../components/starlog/ds";
+import { interpolate } from "../hooks/useGSAPBeat";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /* ============================================================
    TRANSMISSION 06 // ARCHIVE  —  MISSION DOSSIERS
    No pinned scrollytelling. Vertical spine with dossier cards
-   that enter via useInView (viewport-triggered → stays motion/react).
-   Only the spine fill height is scroll-bound → GSAP ScrollTrigger.
+   that reveal + out via GSAP ScrollTrigger (matching the Beat
+   reveal-and-out pattern used throughout the pinned stages).
    ============================================================ */
 
 const TONES = ["lavender", "aqua", "coral", "mint"];
@@ -44,7 +44,6 @@ const Experiences = () => {
   const sectionRef = useRef(null);
   const spineFillRef = useRef(null);
 
-  // Spine fill driven by GSAP ScrollTrigger (replaces useScroll + useTransform)
   useEffect(() => {
     const el = sectionRef.current;
     const fill = spineFillRef.current;
@@ -61,23 +60,26 @@ const Experiences = () => {
       },
     });
 
-    return () => st.kill();
+    const refreshFrame = requestAnimationFrame(() => ScrollTrigger.refresh());
+
+    return () => {
+      cancelAnimationFrame(refreshFrame);
+      st.kill();
+    };
   }, []);
 
   return (
     <ChapterFrame id="experience" className="!mt-0">
       <div ref={sectionRef} className="relative pt-24 md:pt-28 pb-28">
-        {/* ============ HEADER : Departure-board ============ */}
+        {/* ============ HEADER ============ */}
         <ManifestHeader yearRange={yearRange} count={experiences.length} />
 
         {/* ============ SPINE + DOSSIERS ============ */}
         <div className="relative mt-20 md:mt-28">
-          {/* Vertical spine */}
           <div
             aria-hidden
             className="absolute left-4 sm:left-8 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-px bg-white/8"
           />
-          {/* Filled portion — tracks scroll */}
           <div
             ref={spineFillRef}
             aria-hidden
@@ -103,10 +105,6 @@ const Experiences = () => {
           <div className="mx-auto w-[min(640px,80vw)]">
             <Hairline />
           </div>
-          <div className="mt-3 flex justify-between font-mono-tight text-[10px] tracking-[0.4em] text-neutral-500 max-w-[min(640px,80vw)] mx-auto">
-            <span>END · MODULE 06</span>
-            <span>↓ 07 · REVIEWS</span>
-          </div>
         </div>
       </div>
     </ChapterFrame>
@@ -116,100 +114,154 @@ const Experiences = () => {
 export default memo(Experiences);
 
 /* ============================================================
-   Departure-board header (viewport-triggered — stays motion/react)
+   ManifestHeader — scroll-driven reveal + out
    ============================================================ */
 const ManifestHeader = memo(function ManifestHeader({ yearRange, count }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-15% 0px" });
+  const badgeRef = useRef(null);
+  const titleRef = useRef(null);
+  const subtitleRef = useRef(null);
+  const metaRef = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const st = ScrollTrigger.create({
+      trigger: el,
+      start: "top 80%",
+      end: "bottom 15%",
+      scrub: 0,
+      onUpdate: (self) => {
+        const p = self.progress;
+
+        if (badgeRef.current) {
+          badgeRef.current.style.opacity = interpolate(p, [0, 0.10, 0.88, 1], [0, 1, 1, 0]);
+          badgeRef.current.style.transform = `translateY(${interpolate(p, [0, 0.10], [12, 0])}px)`;
+        }
+        if (titleRef.current) {
+          titleRef.current.style.opacity = interpolate(p, [0.04, 0.18, 0.88, 1], [0, 1, 1, 0]);
+          titleRef.current.style.transform = `translateY(${interpolate(p, [0.04, 0.18], [20, 0])}px)`;
+        }
+        if (subtitleRef.current) {
+          subtitleRef.current.style.opacity = interpolate(p, [0.10, 0.28, 0.88, 1], [0, 1, 1, 0]);
+        }
+        if (metaRef.current) {
+          metaRef.current.style.opacity = interpolate(p, [0.18, 0.38, 0.88, 1], [0, 1, 1, 0]);
+          metaRef.current.style.transform = `scaleX(${interpolate(p, [0.18, 0.38], [0, 1])})`;
+        }
+      },
+    });
+
+    const rf = requestAnimationFrame(() => ScrollTrigger.refresh());
+    return () => {
+      cancelAnimationFrame(rf);
+      st.kill();
+    };
+  }, []);
+
   return (
     <header ref={ref} className="relative max-w-5xl mx-auto px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="flex items-center gap-3 mb-6"
-      >
-        <StatusDot tone="lavender" />
-        <MonoLabel tone="neutral">MODULE · 06</MonoLabel>
-        <span className="block w-8 h-px bg-white/15" />
-        <MonoLabel tone="lavender">EXPERIENCE</MonoLabel>
-      </motion.div>
-
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+      <h2
+        ref={titleRef}
+        style={{ opacity: 0, willChange: "transform, opacity" }}
         className="font-display-tight text-4xl md:text-6xl lg:text-7xl text-white tracking-[-0.04em] leading-[0.95]"
       >
-        Engineering <span className="italic text-lavender">history,</span>
+        Proof of <span className="italic text-lavender">build,</span>
         <br className="hidden md:block" /> committed.
-      </motion.h2>
+      </h2>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.5, delay: 0.3 }}
+      <p
+        ref={subtitleRef}
+        style={{ opacity: 0 }}
         className="mt-5 max-w-xl text-neutral-400 text-base md:text-lg leading-relaxed"
       >
-        Every role, every system, every measurable outcome — pulled from the
-        commit history and ready for code review.
-      </motion.p>
-
-      <motion.div
-        initial={{ opacity: 0, scaleX: 0 }}
-        animate={inView ? { opacity: 1, scaleX: 1 } : {}}
-        transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        style={{ transformOrigin: "left" }}
-        className="mt-10 grid grid-cols-3 gap-px bg-white/10 border border-lavender/20 starlog-clip max-w-3xl"
-      >
-        <Slat label="FILES" value={String(count).padStart(2, "0")} tone="lavender" />
-        <Slat label="SPAN" value={yearRange} tone="aqua" />
-        <Slat label="STATUS" value="ACTIVE" tone="mint" badge />
-      </motion.div>
+        Roles, systems, metrics, and shipped work - pulled into one clean
+        proof layer for recruiters, teams, and collaborators.
+      </p>
     </header>
   );
 });
 
-const Slat = memo(function Slat({ label, value, tone, badge }) {
-  const toneClass = {
-    lavender: "text-lavender",
-    aqua: "text-aqua",
-    mint: "text-mint",
-    coral: "text-coral",
-  }[tone];
-  return (
-    <div className="bg-primary/85 px-4 py-3.5 flex items-center justify-between gap-3">
-      <div>
-        <div className="font-mono-tight text-[9px] tracking-[0.34em] text-neutral-500 uppercase">
-          {label}
-        </div>
-        <div className={`font-display-tight text-xl md:text-2xl tracking-[-0.02em] mt-0.5 ${toneClass} tabular-nums`}>
-          {value}
-        </div>
-      </div>
-      {badge && (
-        <span className={`inline-flex items-center gap-1.5 px-2 py-1 border ${tone === "mint" ? "border-mint/40" : "border-white/20"} font-mono-tight text-[9px] tracking-[0.3em] ${toneClass}`}>
-          <span className={`block w-1.5 h-1.5 rounded-full bg-mint shadow-[0_0_8px_#57db96]`} />
-          LIVE
-        </span>
-      )}
-    </div>
-  );
-});
+
 
 /* ============================================================
-   DossierEntry — viewport-triggered (stays motion/react)
+   DossierEntry — scroll-driven reveal + out
+   One ScrollTrigger per entry drives all child element animations.
    ============================================================ */
 const DossierEntry = memo(function DossierEntry({ item, index, total, tone }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-20% 0px -10% 0px" });
+  const liRef = useRef(null);
+  const spineNodeRef = useRef(null);
+  const articleRef = useRef(null);
+  const stampRef = useRef(null);
+  const logLineRefs = useRef([]);
+  const routeTagRefs = useRef([]);
 
   const side = index % 2 === 0 ? "left" : "right";
   const fromX = side === "left" ? -40 : 40;
-
   const year = yearOf(item.date);
   const mo = monthOf(item.date);
-  const fileNo = `06-${String(index + 1).padStart(3, "0")}`;
+
+  useEffect(() => {
+    const el = liRef.current;
+    if (!el) return;
+
+    const st = ScrollTrigger.create({
+      trigger: el,
+      start: "top 88%",
+      end: "bottom 8%",
+      scrub: 0,
+      onUpdate: (self) => {
+        const p = self.progress;
+
+        // Spine node — scale reveal + out
+        if (spineNodeRef.current) {
+          const scale = interpolate(p, [0, 0.12, 0.90, 1], [0, 1, 1, 0]);
+          spineNodeRef.current.style.transform = `translateX(-50%) scale(${scale})`;
+        }
+
+        // Article card — slide-in from side + up, fade out on exit
+        if (articleRef.current) {
+          articleRef.current.style.opacity = interpolate(p, [0, 0.15, 0.88, 1], [0, 1, 1, 0]);
+          const x = interpolate(p, [0, 0.20, 0.85, 1], [fromX, 0, 0, -fromX * 0.4]);
+          const y = interpolate(p, [0, 0.15, 0.88, 1], [30, 0, 0, 20]);
+          articleRef.current.style.transform = `translateX(${x}px) translateY(${y}px)`;
+        }
+
+        // Stamp — delayed reveal + out
+        if (stampRef.current) {
+          const stampOp = interpolate(p, [0.12, 0.30, 0.88, 1], [0, 0.18, 0.18, 0]);
+          const stampScale = interpolate(p, [0.12, 0.30], [0.5, 1]);
+          stampRef.current.style.opacity = stampOp;
+          stampRef.current.style.transform = `scale(${stampScale}) rotate(-8deg)`;
+        }
+
+        // Log lines — staggered cascade reveal + out
+        logLineRefs.current.forEach((el, i) => {
+          if (!el) return;
+          const start = 0.20 + i * 0.06;
+          const end = start + 0.07;
+          el.style.opacity = interpolate(p, [start, end, 0.88, 1], [0, 1, 1, 0]);
+          el.style.transform = `translateX(${interpolate(p, [start, end], [-8, 0])}px)`;
+        });
+
+        // Route tags — staggered cascade reveal + out
+        routeTagRefs.current.forEach((el, i) => {
+          if (!el) return;
+          const start = 0.30 + i * 0.03;
+          const end = start + 0.05;
+          el.style.opacity = interpolate(p, [start, end, 0.88, 1], [0, 1, 1, 0]);
+          el.style.transform = `translateY(${interpolate(p, [start, end], [8, 0])}px)`;
+        });
+      },
+    });
+
+    const rf = requestAnimationFrame(() => ScrollTrigger.refresh());
+    return () => {
+      cancelAnimationFrame(rf);
+      st.kill();
+    };
+  }, [index, fromX]);
 
   const tokens = {
     lavender: {
@@ -242,22 +294,23 @@ const DossierEntry = memo(function DossierEntry({ item, index, total, tone }) {
     },
   }[tone];
 
+  const fileNo = `06-${String(index + 1).padStart(3, "0")}`;
+
   return (
-    <li ref={ref} className="relative">
+    <li ref={liRef} className="relative">
       {/* SPINE NODE */}
-      <motion.span
-        initial={{ scale: 0 }}
-        animate={inView ? { scale: 1 } : {}}
-        transition={{ duration: 0.4, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute left-4 sm:left-8 md:left-1/2 md:-translate-x-1/2 top-6 z-20 -translate-x-1/2"
+      <span
+        ref={spineNodeRef}
+        style={{ transform: "translateX(-50%) scale(0)", willChange: "transform" }}
+        className="absolute left-4 sm:left-8 md:left-1/2 top-8 z-20"
       >
         <span className={`relative block w-3.5 h-3.5 rounded-full ${tokens.bg} ring-4 ring-primary`}>
           <span className={`absolute inset-0 rounded-full ${tokens.bg} opacity-40 animate-ping`} />
         </span>
-        <span className="hidden md:block absolute right-7 top-0 -translate-y-1 font-mono-tight text-[10px] tracking-[0.3em] text-neutral-500 whitespace-nowrap">
+        <span className="hidden md:block absolute right-7 top-0 -translate-y-1 font-body text-[11px] font-semibold text-neutral-400 whitespace-nowrap">
           {mo} {year}
         </span>
-      </motion.span>
+      </span>
 
       {/* Card container */}
       <div
@@ -267,178 +320,98 @@ const DossierEntry = memo(function DossierEntry({ item, index, total, tone }) {
             : "md:pl-[calc(50%+2.5rem)] md:pr-0"
         }`}
       >
-        <motion.article
-          initial={{ opacity: 0, x: fromX, y: 30 }}
-          animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
-          transition={{
-            duration: 0.85,
-            delay: 0.1,
-            ease: [0.22, 1, 0.36, 1],
-          }}
+        <article
+          ref={articleRef}
+          style={{ opacity: 0, willChange: "transform, opacity" }}
           className={`group relative ${tokens.shadow}`}
         >
           {/* Connector line */}
           <span
             aria-hidden
-            className={`hidden md:block absolute top-7 ${
+            className={`hidden md:block absolute top-9 ${
               side === "left" ? "right-0 translate-x-full" : "left-0 -translate-x-full"
             } w-8 h-px ${tokens.bg} opacity-50`}
           />
 
           {/* CARD */}
-          <div className={`relative bg-gradient-to-br ${tokens.from} via-midnight/85 to-primary border ${tokens.border} starlog-clip overflow-hidden`}>
-            {/* TOP STRIP */}
-            <div className="relative flex items-stretch border-b border-white/10">
-              <div className={`px-4 py-2.5 ${tokens.bg} bg-opacity-20 border-r border-white/10 flex items-center gap-2`}>
-                <span className={`font-mono-tight text-[9px] tracking-[0.3em] ${tokens.accent} uppercase`}>
-                  ENTRY · {fileNo}
-                </span>
-              </div>
-              <div className="flex-1 px-4 py-2.5 flex items-center gap-3 overflow-hidden">
-                <Barcode tone={tone} />
-                <span className="font-mono-tight text-[9px] tracking-[0.32em] text-neutral-500 uppercase truncate">
-                  {item.type || "ENGAGEMENT"} · {item.location?.split(",")[0] || "—"}
-                </span>
-              </div>
-              <div className="px-4 py-2.5 border-l border-white/10 flex items-center gap-2">
-                <span className="font-display-tight text-xl text-white tracking-[-0.02em] tabular-nums">
-                  {year}
-                </span>
-              </div>
+          <div className="relative bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/[0.08] rounded-2xl overflow-hidden p-6 md:p-8 backdrop-blur-md">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
+              <span className={`font-body text-xs font-semibold tracking-wider ${tokens.accent} uppercase`}>
+                {item.type || "ENGAGEMENT"} · {item.location || "—"}
+              </span>
+              <span className="font-body text-xs font-semibold text-neutral-400">
+                {item.date}
+              </span>
             </div>
 
-            {/* BODY */}
-            <div className="relative grid grid-cols-1 lg:grid-cols-12">
-              {/* MAIN COLUMN */}
-              <div className="lg:col-span-8 p-5 md:p-7 relative">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.5, rotate: -8 }}
-                  animate={inView ? { opacity: 0.18, scale: 1, rotate: -8 } : {}}
-                  transition={{ duration: 0.6, delay: 0.6 }}
-                  className={`absolute -top-3 right-4 px-3 py-1 border-2 ${tokens.border} ${tokens.accent} font-display-tight text-2xl md:text-3xl tracking-[0.1em] pointer-events-none select-none italic`}
-                  aria-hidden
-                >
-                  {item.type === "Full-time" ? "CURRENT" : "SHIPPED"}
-                </motion.div>
+            <h3 className="font-display-tight text-2xl sm:text-3xl text-white tracking-[-0.03em] leading-tight mb-1">
+              {item.title}
+            </h3>
+            <p className={`font-body text-sm font-medium ${tokens.accent} tracking-wide mb-4`}>
+              {item.job}
+            </p>
 
-                <div className="flex items-center gap-2 mb-2 flex-wrap">
-                  <MonoLabel tone={tone}>ROLE · SHIPPED</MonoLabel>
-                  <span className={`block w-1 h-1 rounded-full ${tokens.bg}`} />
-                  <MonoLabel>{item.date}</MonoLabel>
-                </div>
+            {item.description && (
+              <p className="text-sm md:text-base text-neutral-300 leading-relaxed mb-6">
+                {item.description}
+              </p>
+            )}
 
-                <h3 className="font-display-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white tracking-[-0.035em] leading-[1.05]">
-                  {item.title}
-                </h3>
-
-                <p className="font-mono-tight text-[11px] md:text-xs text-neutral-400 mt-2 tracking-[0.16em] uppercase">
-                  ◇ {item.job}
-                  {item.location && (
-                    <span className="ml-3 text-neutral-500 normal-case">
-                      ({item.location})
-                    </span>
-                  )}
-                </p>
-
-                {item.description && (
-                  <p className="mt-4 md:mt-5 text-sm md:text-base text-neutral-200 leading-relaxed">
-                    {item.description}
-                  </p>
-                )}
-
-                {item.contents && item.contents.length > 0 && (
-                  <div className="mt-5 md:mt-6 border-l-2 border-white/10 pl-4">
-                    <MonoLabel tone="aqua" className="block mb-2">
-                      COMMIT · LOG
-                    </MonoLabel>
-                    <ul className="space-y-1.5">
-                      {item.contents.slice(0, 4).map((c, i) => (
-                        <LogLine key={i} text={c} index={i} inView={inView} tone={tone} />
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {item.technologies && (
-                  <div className="mt-5 md:mt-6 pt-4 border-t border-white/10">
-                    <div className="flex items-center gap-3 mb-2.5">
-                      <MonoLabel>▶ STACK · USED</MonoLabel>
-                      <span className="block flex-1 h-px bg-white/5" />
-                      <MonoLabel tone="neutral">
-                        {item.technologies.length} TAGS
-                      </MonoLabel>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {item.technologies.slice(0, 12).map((t, i) => (
-                        <RouteTag key={t} label={t} index={i} inView={inView} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* PERFORATED STUB */}
-              <div className="lg:col-span-4 relative border-t lg:border-t-0 lg:border-l border-dashed border-white/15">
-                <span aria-hidden className="hidden lg:flex absolute left-0 top-0 bottom-0 -translate-x-1/2 flex-col justify-between py-4">
-                  {Array.from({ length: 9 }).map((_, i) => (
-                    <span key={i} className="block w-2 h-2 rounded-full bg-primary border border-white/15" />
+            {item.contents && item.contents.length > 0 && (
+              <div className="mb-6 border-l-2 border-white/10 pl-4">
+                <span className="block font-body text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2">Key Accomplishments</span>
+                <ul className="space-y-1.5">
+                  {item.contents.slice(0, 4).map((c, i) => (
+                    <LogLine
+                      key={i}
+                      text={c}
+                      index={i}
+                      tone={tone}
+                      ref={(el) => (logLineRefs.current[i] = el)}
+                    />
                   ))}
-                </span>
-
-                <div className="p-5 md:p-6 h-full flex flex-col">
-                  <div className="flex items-center justify-between mb-4">
-                    <MonoLabel tone={tone}>METRICS · SNAPSHOT</MonoLabel>
-                    <SealStamp tone={tone} index={index} />
-                  </div>
-
-                  {item.metrics && item.metrics.length > 0 ? (
-                    <ul className="space-y-3 flex-1">
-                      {item.metrics.slice(0, 3).map((m) => (
-                        <li key={m.label} className="border-l-2 border-white/10 pl-3 py-1">
-                          <div className={`font-display-tight text-2xl md:text-3xl ${tokens.accent} tracking-[-0.02em] leading-none tabular-nums`}>
-                            {m.value}
-                          </div>
-                          <div className="mt-1.5 font-mono-tight text-[9px] tracking-[0.22em] text-neutral-400 uppercase leading-snug">
-                            {m.label}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <div className="flex-1 flex items-center justify-center text-neutral-600 italic font-display-tight text-sm">
-                      no metrics logged
-                    </div>
-                  )}
-
-                  <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between font-mono-tight text-[9px] tracking-[0.28em] text-neutral-500 uppercase">
-                    <span>CLR · {tone.slice(0, 3).toUpperCase()}</span>
-                    <span>{index + 1}/{total}</span>
-                  </div>
-                </div>
+                </ul>
               </div>
-            </div>
+            )}
 
-            {/* BOTTOM micro-strip */}
-            <div className="relative border-t border-white/10 flex items-center justify-between px-4 py-2 bg-black/30">
-              <span className="font-mono-tight text-[9px] tracking-[0.4em] text-neutral-600 uppercase">
-                ◇ END · OF · ENTRY
-              </span>
-              <span className={`font-mono-tight text-[9px] tracking-[0.32em] ${tokens.accent} uppercase`}>
-                {fileNo}
-              </span>
-            </div>
+            {item.metrics && item.metrics.length > 0 && (
+              <div className="mb-6 grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                {item.metrics.slice(0, 3).map((m) => (
+                  <div key={m.label} className="flex flex-col">
+                    <span className={`font-display-tight text-xl md:text-2xl ${tokens.accent} tracking-tight leading-none`}>
+                      {m.value}
+                    </span>
+                    <span className="mt-1 font-body text-[10px] font-medium text-neutral-400 uppercase tracking-wider leading-snug">
+                      {m.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {item.technologies && (
+              <div className="pt-4 border-t border-white/[0.06] flex flex-wrap gap-1.5">
+                {item.technologies.slice(0, 12).map((t, i) => (
+                  <RouteTag
+                    key={t}
+                    label={t}
+                    index={i}
+                    ref={(el) => (routeTagRefs.current[i] = el)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        </motion.article>
+        </article>
       </div>
     </li>
   );
 });
 
 /* ============================================================
-   Small sub-components (viewport-triggered — stay motion/react)
+   LogLine — ref-driven, animated by parent's ScrollTrigger
    ============================================================ */
-
-const LogLine = memo(function LogLine({ text, index, inView, tone }) {
+const LogLine = memo(forwardRef(function LogLine({ text, index, tone }, ref) {
   const accent = {
     lavender: "text-lavender",
     aqua: "text-aqua",
@@ -446,66 +419,30 @@ const LogLine = memo(function LogLine({ text, index, inView, tone }) {
     mint: "text-mint",
   }[tone];
   return (
-    <motion.li
-      initial={{ opacity: 0, x: -8 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.45, delay: 0.3 + index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+    <li
+      ref={ref}
+      style={{ opacity: 0, willChange: "transform, opacity" }}
       className="flex items-start gap-2.5 text-[13px] md:text-sm text-neutral-300 leading-snug"
     >
-      <span className={`font-mono-tight text-[10px] mt-1 tabular-nums ${accent}`}>
+      <span className={`font-body text-xs font-semibold mt-0.5 tabular-nums ${accent}`}>
         {String(index + 1).padStart(2, "0")}
       </span>
       <span>{text}</span>
-    </motion.li>
+    </li>
   );
-});
+}));
 
-const RouteTag = memo(function RouteTag({ label, index, inView }) {
-  return (
-    <motion.span
-      initial={{ opacity: 0, y: 8 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.35, delay: 0.55 + index * 0.035, ease: [0.22, 1, 0.36, 1] }}
-      className="inline-flex items-center gap-1 px-2 py-1 rounded-sm border border-white/15 bg-black/30 font-mono-tight text-[10px] tracking-[0.18em] text-neutral-300 uppercase"
-    >
-      <span className="text-[8px] opacity-50">◇</span>
-      {label}
-    </motion.span>
-  );
-});
-
-const Barcode = memo(function Barcode({ tone }) {
-  const stroke = {
-    lavender: "bg-lavender/70",
-    aqua: "bg-aqua/70",
-    coral: "bg-coral/70",
-    mint: "bg-mint/70",
-  }[tone];
-  const widths = [1, 2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 2, 1, 1, 3, 1, 2, 1];
-  return (
-    <div className="flex items-end gap-[1.5px] h-4">
-      {widths.map((w, i) => (
-        <span key={i} className={`${i % 3 === 0 ? "bg-white/40" : stroke} block`} style={{ width: `${w}px`, height: i % 2 === 0 ? "100%" : "65%" }} />
-      ))}
-    </div>
-  );
-});
-
-const SealStamp = memo(function SealStamp({ tone, index }) {
-  const ring = {
-    lavender: "border-lavender/70 text-lavender",
-    aqua: "border-aqua/70 text-aqua",
-    coral: "border-coral/70 text-coral",
-    mint: "border-mint/70 text-mint",
-  }[tone];
+/* ============================================================
+   RouteTag — ref-driven, animated by parent's ScrollTrigger
+   ============================================================ */
+const RouteTag = memo(forwardRef(function RouteTag({ label, index }, ref) {
   return (
     <span
-      className={`relative inline-flex items-center justify-center w-10 h-10 rounded-full border ${ring}`}
+      ref={ref}
+      style={{ opacity: 0, willChange: "transform, opacity" }}
+      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/[0.08] bg-white/[0.02] font-body text-[11px] font-semibold text-neutral-300 uppercase"
     >
-      <span className={`absolute inset-1 rounded-full border border-current opacity-50`} />
-      <span className="font-mono-tight text-[9px] tracking-[0.18em] uppercase">
-        {String(index + 1).padStart(2, "0")}
-      </span>
+      {label}
     </span>
   );
-});
+}));

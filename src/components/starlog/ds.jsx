@@ -1,9 +1,9 @@
 
-import { memo, useEffect, useRef, useState, useCallback, createContext, useContext } from "react";
+import { memo, useEffect, useRef, useState, createContext, useContext } from "react";
 import { motion, useInView } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { interpolate, interpolateString } from "../../hooks/useGSAPBeat";
+import { interpolate } from "../../hooks/useGSAPBeat";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -466,7 +466,15 @@ export const PinnedStage = memo(function PinnedStage({
       },
     });
 
-    return () => st.kill();
+    const refreshFrame = requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+      progress.set(st.progress);
+    });
+
+    return () => {
+      cancelAnimationFrame(refreshFrame);
+      st.kill();
+    };
   }, [progress]);
 
   const toneText = {
@@ -480,6 +488,7 @@ export const PinnedStage = memo(function PinnedStage({
     <section
       id={id}
       ref={outerRef}
+      data-pinned-stage="true"
       className="relative"
       style={{
         height: `${height}vh`,
@@ -499,44 +508,6 @@ export const PinnedStage = memo(function PinnedStage({
             willChange: "transform",
           }}
         />
-        <div className="starlog-scanlines" aria-hidden />
-        <div className="starlog-grain" aria-hidden />
-
-        {/* Corner registration marks */}
-        <span className="reg-mark" style={{ top: 24, left: 24 }} aria-hidden />
-        <span className="reg-mark" style={{ top: 24, right: 24 }} aria-hidden />
-        <span className="reg-mark" style={{ bottom: 24, left: 24 }} aria-hidden />
-        <span className="reg-mark" style={{ bottom: 24, right: 24 }} aria-hidden />
-
-        {/* Persistent header */}
-        {!hideHeader && (
-          <div className="absolute top-24 md:top-28 left-1/2 -translate-x-1/2 flex items-center gap-2 md:gap-3 font-mono-tight text-[9px] md:text-[10px] tracking-[0.4em] md:tracking-[0.5em] text-neutral-500 z-40 whitespace-nowrap px-4">
-            <span className="hidden sm:block w-6 h-px bg-lavender/60" />
-            <span>MODULE · {index}</span>
-            <span className="block w-4 md:w-6 h-px bg-white/15" />
-            <span className={toneText}>{callsign}</span>
-            <span className="hidden sm:block w-6 h-px bg-aqua/60" />
-          </div>
-        )}
-
-        {/* Bottom progress rail */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[min(320px,72vw)] z-40">
-          <div className="flex justify-between font-mono-tight text-[9px] tracking-[0.35em] text-neutral-500 mb-2 uppercase">
-            <span>00</span>
-            <span className="hidden sm:block text-center text-[8px] tracking-[0.3em]">
-              {beatLabels.join(" · ")}
-            </span>
-            <span>01</span>
-          </div>
-          <div className="h-px bg-white/10 relative overflow-hidden">
-            <div
-              ref={railFillRef}
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-lavender via-aqua to-coral"
-              style={{ width: "0%" }}
-            />
-          </div>
-        </div>
-
         {/* Beats live inside this container */}
         <ProgressContext.Provider value={progress}>
           {typeof children === "function" ? children(progress) : children}

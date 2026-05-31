@@ -2,9 +2,9 @@ import { memo, useRef, useEffect } from "react";
 import { interpolate } from "../../hooks/useGSAPBeat";
 
 const words = [
-  { word: "ENGINEER", sub: "// scalable backends · MERN · system design" },
-  { word: "ARCHITECT", sub: "// caches, queues, sockets, contracts" },
-  { word: "SHIP", sub: "// 03:00 deploys · zero-downtime · receipts" },
+  { word: "BUILD", sub: "// MERN demos / dashboards / APIs" },
+  { word: "POLISH", sub: "// motion, flows, speed, clarity" },
+  { word: "LAUNCH", sub: "// deploys, previews, proof, receipts" },
 ];
 
 const ranges = [

@@ -23,41 +23,41 @@ export const mySocials = [
 
 export const freelanceServices = [
   {
-    title: "Build & Ship",
+    title: "Launch the MVP",
     description:
-      "Full-cycle ownership for MVPs, dashboards, and B2B products - from architecture to launch.",
+      "From raw idea to live demo: I plan, build, polish, and deploy product-ready web experiences.",
     points: [
-      "MERN and cloud-native stacks",
-      "Secure auth, APIs, and integrations",
-      "Performance, observability, and scaling",
+      "MERN apps with clean product flows",
+      "Auth, APIs, dashboards, and integrations",
+      "Fast deploys with performance baked in",
     ],
   },
   {
-    title: "Improve & Optimize",
+    title: "Glow-Up the Stack",
     description:
-      "Drop in to stabilize existing products, tame tech debt, and accelerate delivery.",
+      "Already have something live? I tighten the experience, clean up bottlenecks, and make it demo-worthy.",
     points: [
-      "Audit and refactor critical paths",
-      "Caching, queues, and real-time systems",
-      "CI/CD, monitoring, and cost control",
+      "UI polish and smoother user journeys",
+      "Caching, queues, and real-time upgrades",
+      "Bug fixes, refactors, and launch hardening",
     ],
   },
   {
-    title: "Consult & Partner",
+    title: "Build Partner Mode",
     description:
-      "Bring me in for architecture reviews, roadmaps, and hands-on guidance for your team.",
+      "Need a dev who can think product, architecture, and execution? I plug in and move the build forward.",
     points: [
-      "System design workshops",
-      "Technical spikes and proofs",
-      "Ongoing technical leadership",
+      "Architecture reviews and roadmap calls",
+      "Proofs of concept and feature spikes",
+      "Hands-on engineering support",
     ],
   },
 ];
 
 export const freelanceDetails = [
-  { label: "Availability", value: "Open for select remote projects" },
-  { label: "Engagements", value: "Project-based, retainers, or sprints" },
-  { label: "Response Time", value: "Replies within 1-2 business days" },
+  { label: "Availability", value: "Open for selected remote builds" },
+  { label: "Engagements", value: "MVPs, revamps, sprints, or demos" },
+  { label: "Response Time", value: "Replies within 24-48 hours" },
 ];
 
 // constants.js
@@ -65,12 +65,169 @@ export const freelanceDetails = [
 export const myProjects = [
   {
     id: 1,
-    title: "URL Shortener Service – Scalable MERN Application",
-    category: "Full Stack Development",
+    title: "Promove.cloud - National Innovation Platform",
+    category: "Live Product",
     description:
-      "A scalable URL shortening platform built with the MERN stack, featuring analytics, expiration, rate limiting, background workers, and Redis-based caching using FlashKV and Upstash.",
+      "An Instant Execution Engine that turns student projects and execution potential into a verifiable Innovation Score.",
     fullDescription:
-      "A production-grade URL shortener optimized for high traffic and low latency. Uses Redis (Upstash) for caching and queues, BullMQ for background processing, and worker threads for async jobs such as analytics and cleanup.",
+      "Promove.cloud is a live innovation platform built to bridge the gap between student potential and industry execution. It features job listings, industry problem boards, investment pools, and a verifiable Innovation Score system.",
+    features: [
+      "Innovation Score engine",
+      "Job & industry problem board",
+      "Investment pool access",
+      "Modern dark-themed UI",
+      "Production-grade deployment",
+    ],
+    technologies: [
+      "Web Technologies",
+      "Cloud Deployment",
+      "Responsive Design",
+      "Production Infrastructure",
+    ],
+    image: "/assets/projects/promove.webp",
+    href: "https://promove.cloud",
+    github: "",
+    stats: {
+      year: "2025",
+      duration: "Ongoing",
+      role: "Full Stack Builder",
+    },
+  },
+  {
+    id: 2,
+    title: "Prem Industries - Corporate Platform",
+    category: "Live Product",
+    description:
+      "Official corporate web gateway and enterprise communication hub for Prem Industries India Ltd.",
+    fullDescription:
+      "Engineered and deployed the central digital platform for Prem Industries India Ltd. (premindustries.net), handling corporate communications, client portals, and brand presentation.",
+    features: [
+      "Corporate site — premindustries.net",
+      "Client inquiry gateway",
+      "AWS-hosted infrastructure",
+      "Highly responsive modern UI",
+    ],
+    technologies: [
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "AWS EC2",
+      "AWS S3",
+      "AWS CloudFront",
+      "JWT Authentication",
+    ],
+    image: "/assets/projects/premindustries-net.webp",
+    href: "https://premindustries.net",
+    github: "",
+    stats: {
+      year: "2025",
+      duration: "Ongoing",
+      role: "Full Stack Developer",
+    },
+  },
+  {
+    id: 3,
+    title: "Prem Packaging - Digital Business Ecosystem",
+    category: "Live Product Suite",
+    description:
+      "A complete enterprise suite for Prem Packaging featuring a custom design showcase, wholesale e-commerce store with dynamic sizing calculators, and a companion client/workforce mobile application.",
+    fullDescription:
+      "Engineered the digital infrastructure for Prem Packaging (prempackaging.com). This includes a main corporate website with product customization showcase, store.prempackaging.com for B2B e-commerce with automated dynamic pricing calculators, and a cross-platform React Native app for order tracking, leave workflows, and workforce coordination.",
+    features: [
+      "B2B custom catalog showcase & RFQ flow",
+      "E-commerce store with dynamic size calculators",
+      "Secure client invoices, ledger tracking & Redis caching",
+      "React Native mobile app with FCM push alerts",
+      "Workforce shift logging & leave workflows",
+    ],
+    technologies: [
+      "React Native",
+      "React.js",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Redis",
+      "AWS (EC2, S3, CloudFront)",
+      "Firebase Cloud Messaging",
+    ],
+    image: "/assets/projects/prem-store.webp",
+    href: "https://store.prempackaging.com",
+    github: "",
+    stats: {
+      year: "2025",
+      duration: "Ongoing",
+      role: "Lead Full Stack Developer",
+    },
+  },
+  {
+    id: 4,
+    title: "Teak & Traditions - Premium Furniture Store",
+    category: "Live E-Commerce",
+    description:
+      "A premium online furniture store by Aura Furnishings — handcrafted teak and wood collections with room-based browsing, EMI options, and bulk/GST ordering.",
+    fullDescription:
+      "Full e-commerce build for Teak & Traditions covering product discovery by room or style, partial payments and EMI, wishlist, cart, bulk/GST invoicing, and a curated 'Ready to Ship' category.",
+    features: [
+      "Shop by room, style, and product",
+      "Partial payment & EMI support",
+      "Wishlist and cart",
+      "Bulk orders & GST invoicing",
+      "Ready to Ship section",
+      "Responsive storefront",
+    ],
+    technologies: [
+      "E-Commerce Platform",
+      "Responsive Design",
+      "Payment Integration",
+      "Product Catalog",
+    ],
+    image: "/assets/projects/teakandtraditions.webp",
+    href: "https://teakandtraditions.com",
+    github: "",
+    stats: {
+      year: "2025",
+      duration: "Delivered",
+      role: "Full Stack Builder",
+    },
+  },
+  {
+    id: 5,
+    title: "PH Steels - B2B Steel Trading Platform",
+    category: "Live Product",
+    description:
+      "B2B web presence for PH Steels, an authorized JSW dealer, wholesale trader, and distributor of steel plates, sheets, coils, and industrial products in Ghaziabad.",
+    fullDescription:
+      "Built and deployed a clean B2B product catalog and inquiry platform for PH Steels (phsteel.in) in Ghaziabad — covering their full product range (CR/HR coils, steel plates, MS pipes), company profile, and direct enquiry flow.",
+    features: [
+      "Full product catalog with categories",
+      "Company profile & GST details",
+      "Send enquiry flow",
+      "Search across products & services",
+      "Responsive layout",
+    ],
+    technologies: [
+      "Web Technologies",
+      "Responsive Design",
+      "Product Catalog",
+      "B2B Platform",
+    ],
+    image: "/assets/projects/phsteels.webp",
+    href: "https://www.phsteel.in",
+    github: "",
+    stats: {
+      year: "2025",
+      duration: "Delivered",
+      role: "Full Stack Builder",
+    },
+  },
+  {
+    id: 6,
+    title: "URL Shortener Service - Analytics-Ready MERN Build",
+    category: "Full Stack Showcase",
+    description:
+      "A clean URL-shortening demo with auth, analytics, expiry, rate limits, background jobs, and Redis-style speed.",
+    fullDescription:
+      "A production-style URL shortener built to show real backend thinking: fast redirects, cached lookups, queued analytics, abuse protection, and cleanup workers.",
     features: [
       "Custom short URL generation",
       "High-speed redirection with Redis & FlashKV",
@@ -81,39 +238,24 @@ export const myProjects = [
       "Centralized logging",
     ],
     technologies: [
-      // Core Stack
       "MongoDB",
       "Mongoose",
       "Express.js",
       "React.js",
       "Node.js",
-
-      // Authentication & Security
       "JWT Authentication",
       "UUID",
       "Input Validation",
-
-      // Caching & Queues
       "Async Processing",
-
-      // Caching & Performance
       "FlashKV (Custom Redis-like Cache)",
       "TTL & Expiry Handling",
-
-      // Rate Limiting & Reliability
       "express-rate-limit",
       "Retry Strategies",
-
-      // Logging & Observability
       "Winston Logger",
-
-      // Cloud & DevOps
       "AWS EC2",
       "AWS S3",
       "AWS IAM",
       "Environment Variables (.env)",
-
-      // Architecture
       "REST APIs",
       "System Design",
       "Git & GitHub",
@@ -124,18 +266,17 @@ export const myProjects = [
     stats: {
       year: "2024",
       duration: "2 months",
-      role: "Full Stack Developer",
+      role: "Full Stack Builder",
     },
   },
-
   {
-    id: 2,
-    title: "FlashKV – High-Performance In-Memory Key-Value Store",
-    category: "Systems Engineering",
+    id: 7,
+    title: "FlashKV - Tiny Redis-Style Cache Engine",
+    category: "Systems Showcase",
     description:
-      "A Redis-inspired in-memory key–value store built in C++ focusing on concurrency, low latency, and cache internals.",
+      "A C++ key-value cache demo built from scratch to explore concurrency, TTL expiry, and low-latency storage.",
     fullDescription:
-      "FlashKV is a multithreaded, in-memory key–value store implemented from scratch in C++ with TTL-based expiration and thread-safe operations.",
+      "FlashKV is a multithreaded in-memory store with thread-safe operations, TTL-based expiration, and a lightweight Redis-inspired command model.",
     features: [
       "Thread-safe in-memory storage",
       "SET, GET, DELETE, EXPIRE operations",
@@ -162,18 +303,17 @@ export const myProjects = [
     stats: {
       year: "2024",
       duration: "1 month",
-      role: "Systems Developer",
+      role: "Systems Builder",
     },
   },
-
   {
-    id: 3,
-    title: "YouTube Clone – End-to-End Video Streaming Platform",
-    category: "Full Stack Development",
+    id: 8,
+    title: "YouTube Clone - Video Streaming Demo",
+    category: "Full Stack Showcase",
     description:
-      "A full-stack video streaming platform supporting secure uploads, transcoding, authentication, and scalable media delivery.",
+      "A video-platform showcase with uploads, auth, background transcoding, cloud media, and streaming-ready APIs.",
     fullDescription:
-      "Handles video uploads, background transcoding using FFmpeg, cloud storage, and authenticated streaming with scalable backend APIs.",
+      "Built as a full-stack media app demo: users can upload videos, backend workers process media with FFmpeg, and cloud storage handles delivery.",
     features: [
       "Secure video upload & streaming",
       "FFmpeg-based video transcoding",
@@ -182,34 +322,21 @@ export const myProjects = [
       "Cloud media storage",
     ],
     technologies: [
-      // Core
       "React.js",
       "Node.js",
       "Express.js",
       "MongoDB",
       "Mongoose",
-
-      // Media Processing
       "FFmpeg",
       "Video Transcoding Pipelines",
-
-      // Async & Workers
       "BullMQ",
       "Background Workers",
       "Redis (Upstash)",
-
-      // Security & Utilities
       "JWT Authentication",
       "UUID",
-
-      // Cloud
       "Cloudinary",
       "AWS S3",
-
-      // Observability
       "Winston Logger",
-
-      // Architecture
       "REST APIs",
       "MVC Architecture",
       "Git & GitHub",
@@ -220,18 +347,17 @@ export const myProjects = [
     stats: {
       year: "2024",
       duration: "2 months",
-      role: "Full Stack Developer",
+      role: "Full Stack Builder",
     },
   },
-
   {
-    id: 4,
-    title: "Zenith – AR Emergency Route Simulator (Android)",
-    category: "Backend & Mobile Systems",
+    id: 9,
+    title: "Zenith - Emergency Route Simulator",
+    category: "Mobile + Backend Showcase",
     description:
-      "An Android-based emergency navigation application providing real-time ambulance tracking, traffic-aware routing, and emergency notifications.",
+      "An Android emergency-routing concept with real-time ambulance tracking, optimized routes, and instant alerts.",
     fullDescription:
-      "Zenith is an Android application built using Flutter and Dart, backed by a Node.js, Express, and MongoDB backend. The system provides real-time ambulance tracking, optimized routing using traffic data, and instant emergency notifications through a scalable, event-driven backend.",
+      "Zenith pairs a Flutter Android app with a Node.js backend to demonstrate live location updates, traffic-aware route logic, maps integration, and emergency notifications.",
     features: [
       "Android application built with Flutter",
       "Real-time ambulance tracking",
@@ -241,54 +367,42 @@ export const myProjects = [
       "Asynchronous backend processing",
     ],
     technologies: [
-      // Mobile (Android)
       "Flutter",
       "Dart",
       "Android Platform",
-
-      // Backend
       "Node.js",
       "Express.js",
       "MongoDB",
       "Mongoose",
-
-      // Real-Time & Messaging
       "WebSockets",
       "Event-Driven Architecture",
       "Firebase Cloud Messaging",
-
-      // Maps & Algorithms
       "Google Maps API",
       "Google Places API",
       "A* Pathfinding Algorithm",
-
-      // Async & Infrastructure
       "Redis",
       "Background Workers",
-
-      // Architecture & DevOps
       "REST APIs",
       "System Design",
       "AWS EC2",
     ],
-    image: "/assets/projects/zenith-ar.jpg",
+    image: "/assets/projects/zenith-ar.webp",
     href: "https://github.com/Chandi977/AR-Based-Emergency-Route-Simulator",
     github: "https://github.com/Chandi977/AR-Based-Emergency-Route-Simulator",
     stats: {
       year: "2025",
       duration: "Ongoing",
-      role: "Backend Developer",
+      role: "Backend + Realtime Builder",
     },
   },
-
   {
-    id: 5,
-    title: "Speakbot Command Following Bot",
-    category: "Automation & API Integration",
+    id: 10,
+    title: "Speakbot - Voice Command Assistant",
+    category: "Automation Showcase",
     description:
-      "A Python-based assistant bot capable of executing voice and text commands using multiple third-party APIs.",
+      "A Python assistant demo that listens, understands basic commands, and pulls useful info from external APIs.",
     fullDescription:
-      "Integrates speech processing and multiple APIs to automate information retrieval and command execution.",
+      "A lightweight automation assistant combining speech input, text output, weather lookup, Wikipedia search, and command workflows.",
     features: [
       "Voice-based commands",
       "Weather & location lookup",
@@ -311,18 +425,17 @@ export const myProjects = [
     stats: {
       year: "2023",
       duration: "1 month",
-      role: "Developer",
+      role: "Automation Builder",
     },
   },
-
   {
-    id: 6,
-    title: "Banjara Tour & Travel",
-    category: "Web Development",
+    id: 11,
+    title: "Banjara Tour & Travel - Booking Website",
+    category: "Web Showcase",
     description:
-      "A complete travel agency website built using core PHP with booking and inquiry features.",
+      "A travel-agency website demo with packages, booking inquiries, sessions, and responsive pages.",
     fullDescription:
-      "A dynamic PHP-based travel platform with server-side rendering and database-driven content.",
+      "A PHP and MySQL travel platform built around package browsing, inquiry capture, session handling, and simple admin-style workflows.",
     features: [
       "Tour package management",
       "Booking & inquiry forms",
@@ -346,18 +459,17 @@ export const myProjects = [
     stats: {
       year: "2022",
       duration: "2 months",
-      role: "Backend Developer",
+      role: "Web Builder",
     },
   },
-
   {
-    id: 7,
-    title: "Netflix Clone",
-    category: "Frontend Development",
+    id: 12,
+    title: "Netflix Clone - Streaming UI Replica",
+    category: "Frontend Showcase",
     description:
-      "A Netflix UI clone built using React with Firebase authentication.",
+      "A streaming-style React UI demo with Firebase auth, protected routes, and responsive content sections.",
     fullDescription:
-      "Frontend-focused project replicating Netflix UI with cloud-based authentication.",
+      "A frontend showcase focused on clean layout, auth flow, dynamic UI sections, and a familiar streaming-app experience.",
     features: [
       "User authentication",
       "Dynamic UI rendering",
@@ -379,7 +491,7 @@ export const myProjects = [
     stats: {
       year: "2022",
       duration: "1 month",
-      role: "Frontend Developer",
+      role: "Frontend Builder",
     },
   },
 ];
@@ -388,61 +500,61 @@ export const reviews = [
   {
     name: "Sanskar",
     username: "@sanskar",
-    body: "Impressive work! The UI/UX is clean and the performance is top-notch.",
+    body: "Clean UI, smooth motion, and the projects feel ready to demo.",
     img: "https://robohash.org/sanskar",
   },
   {
     name: "Aditya",
     username: "@aditya",
-    body: "The functionality is seamless. I loved the integration and smooth transitions.",
+    body: "The build quality feels sharp. Every section has real showcase energy.",
     img: "https://robohash.org/aditya",
   },
   {
     name: "Riya",
     username: "@riya",
-    body: "Super intuitive and visually appealing. It’s a joy to explore your projects!",
+    body: "The portfolio is easy to scan, but still feels fresh and cinematic.",
     img: "https://robohash.org/riya",
   },
   {
     name: "Suraj",
     username: "@suraj",
-    body: "Clean code, elegant design, and outstanding implementation. Great job!",
+    body: "Strong backend thinking with a presentation style that actually stands out.",
     img: "https://robohash.org/suraj",
   },
   {
     name: "Anurag",
     username: "@anurag",
-    body: "Everything from responsiveness to functionality is top-level. Keep building!",
+    body: "Responsive, polished, and packed with the kind of details recruiters notice.",
     img: "https://robohash.org/anurag",
   },
   {
     name: "Neha",
     username: "@neha",
-    body: "Absolutely love the attention to detail and design aesthetics!",
+    body: "The attention to microcopy, motion, and product context is very strong.",
     img: "https://robohash.org/neha",
   },
   {
     name: "Priyanshu",
     username: "@priyanshu",
-    body: "Your work truly stands out! Impressed by the backend architecture.",
+    body: "The systems projects make the portfolio more than just a pretty UI.",
     img: "https://robohash.org/priyanshu",
   },
   {
     name: "Jyoti",
     username: "@jyoti",
-    body: "Incredible creativity and execution. The user experience is flawless.",
+    body: "Creative presentation with practical engineering depth behind it.",
     img: "https://robohash.org/jyoti",
   },
   {
     name: "Kabir",
     username: "@kabir",
-    body: "Loved it. Very polished and professional—feels like a real product.",
+    body: "Polished enough for clients, technical enough for engineering teams.",
     img: "https://robohash.org/kabir",
   },
   {
     name: "Anjul",
     username: "@anjul",
-    body: "Elegant, fast, and reliable. It’s inspiring to see such work!",
+    body: "Fast, modern, and confident. The showcase format works really well.",
     img: "https://robohash.org/anjul",
   },
 ];
@@ -457,19 +569,19 @@ export const experiences = [
     location: "Ghaziabad, Uttar Pradesh, India",
     type: "Full-time",
     description:
-      "Full Stack Developer working on production-grade backend services and cloud-hosted business systems.",
+      "Building production-grade backend services and cloud-hosted business systems with a focus on speed, reliability, and clean workflows.",
     contents: [
-      "Developed and maintained 5+ production-grade backend services supporting product catalogs, order workflows, and administrative operations.",
-      "Designed and optimized 15+ REST APIs using Node.js, Express, and MongoDB with support for search, filtering, and role-based access control.",
-      "Integrated AWS services (EC2, S3, CloudFront, IAM) to deploy and operate backend services with high availability and secure access.",
-      "Implemented Redis-based caching to reduce repeated database queries by approximately 40%.",
-      "Deployed and maintained frontend builds via AWS Amplify while ensuring reliable backend connectivity.",
-      "Diagnosed and resolved 20+ production issues related to environment configuration, IAM permissions, and database connectivity.",
+      "Built and maintained 5+ backend services powering product catalogs, order flows, and admin operations.",
+      "Designed 15+ REST APIs with search, filters, auth rules, and clean MongoDB data flows.",
+      "Used AWS EC2, S3, CloudFront, and IAM to keep services deployable, secure, and available.",
+      "Added Redis caching to reduce repeated database reads by around 40%.",
+      "Shipped frontend builds through AWS Amplify while keeping backend connectivity stable.",
+      "Fixed 20+ production issues across env setup, IAM access, and database connectivity.",
     ],
     achievements: [
-      "Reduced average API response times by 30–40% through caching and query optimization",
+      "Reduced average API response times by 30-40% through caching and query optimization",
       "Improved system reliability by resolving critical production configuration issues",
-      "Contributed to stable backend services supporting daily business operations",
+      "Kept business-critical backend flows stable for daily operations",
     ],
     technologies: [
       "Node.js",
@@ -487,7 +599,7 @@ export const experiences = [
     metrics: [
       {
         value: "15+",
-        label: "REST APIs designed and maintained",
+        label: "REST APIs shipped and maintained",
       },
       {
         value: "30–40%",
@@ -505,18 +617,18 @@ export const experiences = [
     location: "Remote",
     type: "Internship",
     description:
-      "MERN stack internship focused on building secure backend services and responsive client interfaces.",
+      "MERN internship focused on building full-stack projects with secure auth, reusable UI, and practical APIs.",
     contents: [
-      "Built 5+ end-to-end MERN-based systems with secure authentication and role-based access control.",
-      "Implemented JWT-based authentication across multiple backend services.",
-      "Developed 20+ reusable React components and optimized state management to reduce unnecessary re-renders.",
-      "Designed and integrated RESTful APIs and connected third-party services for real-world scenarios.",
-      "Solved 200+ data structures and algorithms problems alongside project development.",
+      "Built 5+ MERN systems with login flows, role-based access, and connected data models.",
+      "Implemented JWT authentication across backend services.",
+      "Created 20+ reusable React components and reduced unnecessary UI re-renders.",
+      "Integrated REST APIs and third-party services for real-world app scenarios.",
+      "Solved 200+ DSA problems alongside full-stack project work.",
     ],
     achievements: [
-      "Delivered multiple full-stack systems with secure authentication",
-      "Improved frontend performance through reusable component architecture",
-      "Strengthened backend security using JWT-based access control",
+      "Delivered multiple full-stack demos with secure authentication",
+      "Improved frontend performance through reusable component patterns",
+      "Strengthened backend access control with JWT-based security",
     ],
     technologies: [
       "MongoDB",
@@ -549,16 +661,16 @@ export const experiences = [
     location: "Virtual",
     type: "Virtual Experience",
     description:
-      "Virtual software engineering experience simulating enterprise-scale financial systems.",
+      "Enterprise-style engineering simulation focused on financial data, frontend fixes, and production-like tasks.",
     contents: [
-      "Completed 4 real-world simulation tasks involving data visualization, frontend enhancements, and bug fixes.",
-      "Built a stock price data feed interface using Python, React, and TypeScript.",
-      "Processed and visualized large financial data streams using enterprise-style tooling.",
-      "Gained exposure to scalable systems used in investment banking technology.",
+      "Completed 4 simulation tasks across data visualization, UI enhancements, and bug fixes.",
+      "Built a stock-price data feed interface with Python, React, and TypeScript.",
+      "Processed and visualized financial data streams with enterprise-style tooling.",
+      "Explored how scalable systems are used inside investment-banking technology.",
     ],
     achievements: [
-      "Delivered a functional real-time data visualization interface",
-      "Developed familiarity with enterprise financial systems",
+      "Delivered a functional financial-data visualization interface",
+      "Gained hands-on context for enterprise financial systems",
     ],
     technologies: [
       "Python",
@@ -584,16 +696,16 @@ export const experiences = [
     location: "Jamshedpur, Jharkhand",
     type: "Internship",
     description:
-      "Frontend-focused internship contributing to internal digital systems.",
+      "Frontend internship focused on practical UI screens, forms, and internal web flows.",
     contents: [
-      "Implemented 10+ responsive user interface screens using HTML5, CSS3, and Flexbox.",
-      "Built static pages and forms used within internal digital systems.",
-      "Improved visual consistency by standardizing CSS and reusable layout patterns.",
-      "Collaborated in code reviews and resolved UI-related defects.",
+      "Implemented 10+ responsive UI screens using HTML5, CSS3, and Flexbox.",
+      "Built static pages and forms for internal digital systems.",
+      "Improved consistency with shared CSS and reusable layout patterns.",
+      "Fixed UI defects through review feedback and iteration.",
     ],
     achievements: [
-      "Delivered multiple responsive interfaces for internal use",
-      "Improved frontend maintainability through standardized styling",
+      "Delivered multiple responsive interfaces for internal users",
+      "Improved frontend maintainability with standardized styling",
     ],
     technologies: [
       "HTML5",

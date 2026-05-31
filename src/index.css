@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&family=Space+Mono:wght@400;700&display=swap");
 @import "tailwindcss";
 
 @theme {
   --font-mono: "Space Mono", ui-monospace, monospace;
-  --font-display: "Instrument Serif", serif;
-  --font-body: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-display: "Poppins", system-ui, sans-serif;
+  --font-body: "Poppins", system-ui, sans-serif;
   --color-primary: #030412;
   --color-midnight: #06091f;
   --color-navy: #161a31;
@@ -85,11 +85,19 @@
   }
 }
 
+/* Prevent browser native smooth scroll from double-smoothing with Lenis,
+   and prevent elastic/rubber-band overscroll from fighting Lenis at page edges. */
+html {
+  scroll-behavior: auto !important;
+  overscroll-behavior: none;
+}
+
 body {
   background: #030412;
   font-family: var(--font-body);
   color: white;
   overflow-x: hidden;
+  overscroll-behavior: none;
   /* Establish a non-static positioned scroll container so motion/react's
      useScroll can resolve offsets without warnings. */
   position: relative;
@@ -304,60 +312,18 @@ html.lenis body {
    compositor layer that re-blends every scroll frame. We drop the
    blend mode and use a small repeating tile + low opacity instead. */
 .starlog-grain {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.08;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.85 0 0 0 0 0.78 0 0 0 0 1 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 120px 120px;
-  /* hint the browser this layer is static — promote once, then leave alone */
-  transform: translateZ(0);
+  display: none;
 }
 
 /* Scan-line overlay for the instrument panel feeling.
    Promoted to its own layer once so it doesn't repaint on every scroll. */
 .starlog-scanlines {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 0.55) 0px,
-    rgba(255, 255, 255, 0.55) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  transform: translateZ(0);
+  display: none;
 }
 
 /* Registration-mark cross used in the corners */
 .reg-mark {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  pointer-events: none;
-  color: rgba(122, 87, 219, 0.65);
-}
-.reg-mark::before,
-.reg-mark::after {
-  content: "";
-  position: absolute;
-  background: currentColor;
-}
-.reg-mark::before {
-  left: 50%;
-  top: 0;
-  width: 1px;
-  height: 100%;
-  transform: translateX(-50%);
-}
-.reg-mark::after {
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  transform: translateY(-50%);
+  display: none;
 }
 
 /* A thin blinking cursor for terminal lines */
@@ -422,14 +388,9 @@ html.lenis body {
   );
 }
 
-/* Punched-corner clip — instrument panel feel */
+/* Punched-corner clip — changed to premium rounded corners */
 .starlog-clip {
-  clip-path: polygon(
-    0 12px, 12px 0,
-    calc(100% - 12px) 0, 100% 12px,
-    100% calc(100% - 12px), calc(100% - 12px) 100%,
-    12px 100%, 0 calc(100% - 12px)
-  );
+  border-radius: 1rem;
 }
 
 /* Used on hover-able panels to glow */
@@ -472,4 +433,166 @@ html.lenis body {
     font-size: 3.75rem;
     line-height: 1;
   }
+}
+
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+html.has-custom-cursor { cursor: none !important; }
+html.has-custom-cursor * { cursor: none !important; }
+/* Restore text cursor inside form elements so editing still works */
+html.has-custom-cursor input,
+html.has-custom-cursor textarea,
+html.has-custom-cursor [contenteditable] { cursor: text !important; }
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+  transition: transform 0.12s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: left, top;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 99998;
+  will-change: left, top;
+  transition:
+    width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.28s ease,
+    background 0.28s ease,
+    box-shadow 0.28s ease,
+    transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================
+   AMBIENT ATMOSPHERE ORBS  (Hero section)
+   ============================================================ */
+@keyframes float-orb {
+  0%   { transform: translate(0%,    0%)    scale(1);    }
+  30%  { transform: translate(1.2%, -1.8%)  scale(1.03); }
+  60%  { transform: translate(-1%,  2.2%)   scale(0.97); }
+  100% { transform: translate(0%,    0%)    scale(1);    }
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* ============================================================
+   SHIMMER SWEEP  (button / card hover)
+   ============================================================ */
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-100%) skewX(-10deg); }
+  100% { transform: translateX(250%)  skewX(-10deg); }
+}
+
+.btn-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255,255,255,0.09) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%) skewX(-10deg);
+  transition: none;
+}
+.btn-shimmer:hover::after {
+  animation: shimmer-sweep 0.65s ease forwards;
+}
+
+/* ============================================================
+   GEN-Z GRADIENT TEXT UTILITIES
+   ============================================================ */
+.text-gradient-hero {
+  background: linear-gradient(130deg, #7a57db 0%, #33c2cc 55%, #57db96 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-warm {
+  background: linear-gradient(130deg, #ea4884 0%, #cc6033 60%, #d6995c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-cool {
+  background: linear-gradient(130deg, #33c2cc 0%, #7a57db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================
+   STATUS BADGE  (hero "available" pill)
+   ============================================================ */
+@keyframes status-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1);   }
+  50%       { opacity: 0.5; transform: scale(1.5); }
+}
+
+.status-pulse {
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+/* ============================================================
+   GLOBAL GRAIN OVERLAY  (ultra-subtle page texture)
+   ============================================================ */
+.global-grain {
+  display: none;
+}
+
+/* ============================================================
+   SECTION ENTRANCE  (fade + rise, replaces SectionLoader)
+   ============================================================ */
+@keyframes section-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.section-enter {
+  animation: section-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ============================================================
+   GLOW BUTTON BASE
+   ============================================================ */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+.btn-glow:hover {
+  transform: translateY(-2px);
+}
+
+/* Upgrade the default scrollbar to a gradient rail */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7a57db 0%, #33c2cc 100%);
+  border-radius: 5px;
 }

@@ -3,7 +3,7 @@ import { interpolate } from "../../hooks/useGSAPBeat";
 
 const stats = [
   { label: "GITHUB CONTRIBUTIONS / 2026", from: 0, to: 382, suffix: "" },
-  { label: "SYSTEMS SHIPPED", from: 0, to: 17, suffix: "" },
+  { label: "DEMOS SHIPPED", from: 0, to: 17, suffix: "" },
   { label: "P99 LATENCY", from: 240, to: 38, suffix: "ms" },
   { label: "UPTIME", from: 91, to: 99, suffix: ".94%" },
 ];

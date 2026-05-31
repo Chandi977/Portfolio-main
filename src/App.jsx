@@ -1,7 +1,9 @@
 /* eslint-disable no-undef */
-import React, { lazy, Suspense, memo } from "react";
+import { lazy, Suspense, memo } from "react";
 import Navbar from "./sections/Navbar";
 import Hero from "./sections/Hero";
+import CustomCursor from "./components/CustomCursor";
+import ScrollProgress from "./components/ScrollProgress";
 
 // Lazy load below-the-fold sections for better initial load performance
 const Starlog = lazy(() => import("./sections/Starlog"));
@@ -13,44 +15,55 @@ const Testimonial = lazy(() => import("./sections/Testimonial"));
 const Contact = lazy(() => import("./sections/Contact"));
 const Footer = lazy(() => import("./sections/Footer"));
 
-// Lightweight loading fallback
+// Elegant section-entrance fallback (fade + rise instead of spinner)
 const SectionLoader = memo(() => (
-  <div className="flex items-center justify-center min-h-[200px]">
-    <div className="w-8 h-8 border-2 border-lavender border-t-transparent rounded-full animate-spin" />
+  <div className="flex items-center justify-center min-h-[220px]">
+    <div className="flex items-center gap-2">
+      <span className="block w-1 h-1 rounded-full bg-lavender/60 animate-pulse" style={{ animationDelay: "0ms" }} />
+      <span className="block w-1 h-1 rounded-full bg-aqua/60 animate-pulse" style={{ animationDelay: "150ms" }} />
+      <span className="block w-1 h-1 rounded-full bg-mint/60 animate-pulse" style={{ animationDelay: "300ms" }} />
+    </div>
   </div>
 ));
 SectionLoader.displayName = "SectionLoader";
 
 const App = () => {
   return (
-    <div className="relative container mx-auto max-w-7xl">
-      <Navbar />
-      <Hero />
-      <Suspense fallback={<SectionLoader />}>
-        <Starlog />
-      </Suspense>
-      <Suspense fallback={<SectionLoader />}>
-        <About />
-      </Suspense>
-      <Suspense fallback={<SectionLoader />}>
-        <Freelance />
-      </Suspense>
-      <Suspense fallback={<SectionLoader />}>
-        <Projects />
-      </Suspense>
-      <Suspense fallback={<SectionLoader />}>
-        <Experiences />
-      </Suspense>
-      <Suspense fallback={<SectionLoader />}>
-        <Testimonial />
-      </Suspense>
-      <Suspense fallback={<SectionLoader />}>
-        <Contact />
-      </Suspense>
-      <Suspense fallback={<SectionLoader />}>
-        <Footer />
-      </Suspense>
-    </div>
+    <>
+      {/* Global visual polish layers (pointer-events: none) */}
+      <div aria-hidden className="global-grain" />
+      <CustomCursor />
+      <ScrollProgress />
+
+      <div className="relative container mx-auto max-w-7xl">
+        <Navbar />
+        <Hero />
+        <Suspense fallback={<SectionLoader />}>
+          <Starlog />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <About />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <Freelance />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <Projects />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <Experiences />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <Testimonial />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <Contact />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <Footer />
+        </Suspense>
+      </div>
+    </>
   );
 };
 
