@@ -40,20 +40,24 @@ const WordRow = memo(function WordRow({ word, sub, progress, range }) {
   }, [progress, a, b, c, d]);
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-      <div className="word-mask overflow-hidden">
-        <h2
-          ref={wordRef}
-          style={{ opacity: 0, willChange: "transform, opacity, filter" }}
-          className="font-display-tight italic text-white text-[18vw] md:text-[14vw] leading-[0.9] tracking-[-0.05em] text-center"
-        >
-          {word}
-        </h2>
-      </div>
+    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4">
+      <h2
+        ref={wordRef}
+        style={{
+          opacity: 0,
+          willChange: "transform, opacity, filter",
+          textShadow: "0 0 80px rgba(122,87,219,0.40), 0 0 180px rgba(51,194,204,0.18)",
+          paddingTop: "0.25em",
+          paddingBottom: "0.15em",
+        }}
+        className="font-impact text-white text-[16vw] md:text-[13vw] lg:text-[11vw] leading-[1.15] tracking-[0.02em] text-center select-none"
+      >
+        {word}
+      </h2>
       <p
         ref={subRef}
         style={{ opacity: 0 }}
-        className="mt-6 font-mono-tight text-[11px] md:text-xs tracking-[0.34em] text-aqua/80 uppercase"
+        className="mt-4 font-mono-tight text-[10px] md:text-[11px] tracking-[0.40em] text-aqua/70 uppercase"
       >
         {sub}
       </p>
